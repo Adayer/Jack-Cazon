@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "AndresPruebasCharacter.h"
 #include "TurnOrderData.h"
+#include "CombatInitiativeWidget.h"
 #include "CombatGameMode.generated.h"
 
 /**
@@ -30,8 +31,14 @@ class MYD_API ACombatGameMode : public AGameModeBase
 
 	//Variables and Properties
 public:
+	//UI
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+		TSubclassOf<UCombatInitiativeWidget> combatInitiativeWidgetClass;
 protected:
-private:
+	UPROPERTY(VisibleAnywhere, Category = "Combat")
+		UCombatInitiativeWidget* combatInitiativeWidget;
+
+	//Logic
 	UPROPERTY(VisibleAnywhere, Category="Combat")
 		TArray<UTurnOrderData*> turnOrderDataList;
 	UPROPERTY(VisibleAnywhere, Category = "Combat")
@@ -54,8 +61,13 @@ public:
 		void StartCombat(); //Called to StartCombat
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 		void ContinueCombat(); //Called to move to the next phase of combat
+
+	//UI
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+		void ToggleInitiativeUI();
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+		void UpdateInitiativeUI();
 protected:
 	void BeginPlay() override;
 private:
-	
 };

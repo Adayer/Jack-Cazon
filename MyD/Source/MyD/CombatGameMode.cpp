@@ -7,6 +7,7 @@ void ACombatGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	StartCombat();
+	ContinueCombat();
 }
 
 void ACombatGameMode::StartCombat()
@@ -15,19 +16,19 @@ void ACombatGameMode::StartCombat()
 	turnIndex = 0;
 	roundIndex = 0;
 	SetCombatOrder();
-	ContinueCombat();
+	ToggleInitiativeUI();
 }
 
 void ACombatGameMode::SetCombatOrder()
 {
 	TArray<AActor*> bufferActors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAndresPruebasCharacter::StaticClass(), bufferActors);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAndresPruebasCharacter::StaticClass(), bufferActors);//Cambiar clase de personaje
 
 	unsigned int numCharacters = bufferActors.Num();
 	turnOrderDataList.Empty();
 	for (unsigned int i = 0; i < numCharacters; ++i)
 	{
-		AAndresPruebasCharacter* bufferChar = Cast<AAndresPruebasCharacter>(bufferActors[i]);
+		AAndresPruebasCharacter* bufferChar = Cast<AAndresPruebasCharacter>(bufferActors[i]);//Cambiar clase de personaje
 		if (bufferChar)
 		{
 			int init = FMath::RandRange(1, 20);
@@ -64,7 +65,7 @@ void ACombatGameMode::ContinueCombat()
 		case CombatPhase::StartingCombat:
 		{
 			currentCombatPhase = CombatPhase::StartingTurn;
-			ContinueCombat(); //Mirar si estar recursividad la lia
+			StartTurn(); //Mirar si estar recursividad la lia
 			break;
 		}
 		case CombatPhase::StartingTurn:
@@ -96,8 +97,9 @@ void ACombatGameMode::ContinueCombat()
 
 void ACombatGameMode::StartTurn()
 {
+	UpdateInitiativeUI();
 	currentCombatPhase = CombatPhase::WaitingForEndTurn;
-	turnOrderDataList[turnIndex]->GetCharacter()->StartTurn();
+	//turnOrderDataList[turnIndex]->GetCharacter()->StartTurn();
 }
 
 void ACombatGameMode::EndTurn()
@@ -116,4 +118,30 @@ void ACombatGameMode::EndTurn()
 void ACombatGameMode::EndCombat()
 {
 	//TODO:End combat
+}
+
+void ACombatGameMode::ToggleInitiativeUI()
+{
+	if (combatInitiativeWidget)
+	{
+		if (combatInitiativeWidget->IsInViewport())
+		{
+			combatInitiativeWidget->RemoveFromViewport();
+		}
+		combatInitiativeWidget = nullptr;
+	}
+	else
+	{
+		combatInitiativeWidget = CreateWidget<UCombatInitiativeWidget>(GetWorld(), combatInitiativeWidgetClass);
+		combatInitiativeWidget->InitUI();
+		combatInitiativeWidget->AddToViewport();
+	}
+}
+
+void ACombatGameMode::UpdateInitiativeUI()
+{
+	if (combatInitiativeWidget)
+	{
+		combatInitiativeWidget->NextTurn();
+	}
 }
