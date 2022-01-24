@@ -39,7 +39,7 @@ protected:
 		UCombatInitiativeWidget* combatInitiativeWidget;
 
 	//Logic
-	UPROPERTY(VisibleAnywhere, Category="Combat")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly ,Category="Combat")
 		TArray<UTurnOrderData*> turnOrderDataList;
 	UPROPERTY(VisibleAnywhere, Category = "Combat")
 		int roundIndex; //Ronda actual (una ronda se compone de varios turnos)

@@ -15,9 +15,10 @@ UCLASS()
 class MYD_API UTurnOrderData : public UObject
 {
 	GENERATED_BODY()
-private:
-	UPROPERTY(VisibleAnywhere, Category = "Combat")
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 		AAndresPruebasCharacter* character;
+private:
 	UPROPERTY(VisibleAnywhere, Category = "Combat")
 		int initiative;
 	UPROPERTY(VisibleAnywhere, Category = "Combat")

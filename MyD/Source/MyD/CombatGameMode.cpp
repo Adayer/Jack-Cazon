@@ -99,7 +99,7 @@ void ACombatGameMode::StartTurn()
 {
 	UpdateInitiativeUI();
 	currentCombatPhase = CombatPhase::WaitingForEndTurn;
-	//turnOrderDataList[turnIndex]->GetCharacter()->StartTurn();
+	turnOrderDataList[turnIndex]->GetCharacter()->StartTurn();
 }
 
 void ACombatGameMode::EndTurn()

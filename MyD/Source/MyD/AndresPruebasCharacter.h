@@ -15,6 +15,9 @@ public:
 	// Sets default values for this character's properties
 	AAndresPruebasCharacter();
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+		UTexture2D* iconTexture;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
