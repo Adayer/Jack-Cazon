@@ -2,4 +2,11 @@
 
 
 #include "MyDGameModeBase.h"
+#include "MyController.h"
+
+
+AMyDGameModeBase::AMyDGameModeBase()
+{
+	PlayerControllerClass = AMyController::StaticClass();
+}
 
