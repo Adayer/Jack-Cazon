@@ -13,4 +13,7 @@ UCLASS()
 class MYD_API AMyDGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+		AMyDGameModeBase();
 };
