@@ -10,13 +10,10 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine",
-<<<<<<< Updated upstream
 				"CoreUObject",
 				"UMGEditor",
-				"UMG"
-=======
+				"UMG",
 				"AIModule"
->>>>>>> Stashed changes
 			]
 		}
 	]
