@@ -3,18 +3,23 @@
 
 #include "Action.h"
 
-void UAction::PerformAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter) {
-	FVector actionLauncherCharacterPosition = actionLauncherCharacter->GetActorLocation();
-	FVector actionRecieverCharacterPosition = actionRecieverCharacter->GetActorLocation();
+bool UAction::PerformAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter) {
 
-	if (FVector::Dist2D(actionLauncherCharacterPosition, actionRecieverCharacterPosition) < actionLauncherCharacter->GetAttackRange()) {
+	if (CanExecuteAction(actionLauncherCharacter, actionRecieverCharacter)) {
 		ExecuteAction(actionLauncherCharacter, actionRecieverCharacter);
+		return true;
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("Attack out of range"));
 	}
+
+	return false;
+}
+
+bool UAction::CanExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter) {
+	return true;
 }
 
 void UAction::ExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter) {
-	UE_LOG(LogTemp, Warning, TEXT("This is the base clase for making actions, override ExecuteAction method to create new action effects"));
+	UE_LOG(LogTemp, Warning, TEXT("This is the base clase for making actions, override ExecuteAction & CanExecuteAction methods to create new action effects"));
 }

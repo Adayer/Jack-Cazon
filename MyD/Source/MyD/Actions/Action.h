@@ -15,6 +15,7 @@ class MYD_API UAction : public UObject
 {
 	GENERATED_BODY()
 
-public: UFUNCTION() void PerformAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter);
+public: UFUNCTION() bool PerformAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter);
+public: UFUNCTION() virtual bool CanExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter);
 public: UFUNCTION() virtual void ExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter);
 };

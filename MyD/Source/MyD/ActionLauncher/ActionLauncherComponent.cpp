@@ -37,7 +37,7 @@ void UActionLauncherComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 	// ...
 }
 
-void UActionLauncherComponent::ExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter)
+bool UActionLauncherComponent::ExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter)
 {
 	if (myAction != NULL) {
 		myAction->PerformAction(actionLauncherCharacter, actionRecieverCharacter);
@@ -46,4 +46,5 @@ void UActionLauncherComponent::ExecuteAction(ABoardCharacter* actionLauncherChar
 		UE_LOG(LogTemp, Warning, TEXT("myAction is NULL"));
 	}
 	
+	return true;
 }
