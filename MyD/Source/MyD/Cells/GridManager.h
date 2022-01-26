@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "HexCell.h"
-#include "TestAIController.h"
+#include "../Cells/HexCell.h"
+#include "../TestAIController.h"
 #include "GridManager.generated.h"
 
 UCLASS()

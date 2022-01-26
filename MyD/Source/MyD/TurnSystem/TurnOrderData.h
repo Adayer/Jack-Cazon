@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "AndresPruebasCharacter.h"
+#include "../CharacterActor.h"
 
 #include "TurnOrderData.generated.h"
 
@@ -17,7 +17,7 @@ class MYD_API UTurnOrderData : public UObject
 	GENERATED_BODY()
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-		AAndresPruebasCharacter* character;
+		ACharacterActor* character;
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Combat")
 		int initiative;
@@ -34,9 +34,9 @@ public:
 	}
 
 	UFUNCTION(BlueprintCallable, Category="Combat")
-		AAndresPruebasCharacter* GetCharacter() const { return character; }
+		ACharacterActor* GetCharacter() const { return character; }
 	UFUNCTION(BlueprintCallable, Category = "Combat")
-		void SetCharacter(AAndresPruebasCharacter* _character) { character = _character; }
+		void SetCharacter(ACharacterActor* _character) { character = _character; }
 	
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 		int  GetInitiative() const { return initiative; }

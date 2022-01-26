@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "HexCell.h"
+#include "Cells/HexCell.h"
 #include "TestAIController.generated.h"
 
 /**

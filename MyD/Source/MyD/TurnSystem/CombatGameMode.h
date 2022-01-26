@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
-#include "AndresPruebasCharacter.h"
+#include "../CharacterActor.h"
 #include "TurnOrderData.h"
 #include "CombatInitiativeWidget.h"
 #include "CombatGameMode.generated.h"

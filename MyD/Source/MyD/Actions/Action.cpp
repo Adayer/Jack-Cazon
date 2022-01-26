@@ -3,10 +3,10 @@
 
 #include "Action.h"
 
-bool UAction::PerformAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter) {
+bool UAction::PerformAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 
-	if (CanExecuteAction(actionLauncherCharacter, actionRecieverCharacter)) {
-		ExecuteAction(actionLauncherCharacter, actionRecieverCharacter);
+	if (CanExecuteAction(actionLauncherCharacter, actionRecieverCell)) {
+		ExecuteAction(actionLauncherCharacter, actionRecieverCell);
 		return true;
 	}
 	else {
@@ -16,10 +16,10 @@ bool UAction::PerformAction(ABoardCharacter* actionLauncherCharacter, ABoardChar
 	return false;
 }
 
-bool UAction::CanExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter) {
+bool UAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	return true;
 }
 
-void UAction::ExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter) {
+void UAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	UE_LOG(LogTemp, Warning, TEXT("This is the base clase for making actions, override ExecuteAction & CanExecuteAction methods to create new action effects"));
 }

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "HexCell.generated.h"
 
+class ACharacterActor;
 
 UENUM()
 enum class ECellType : uint8
@@ -58,6 +59,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 		UMaterial* invalidMat;
+
+	///Too ADDD
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+		ACharacterActor* characterInCell;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -67,5 +72,7 @@ public:
 	void ResetMaterial();
 	void ResetAStartProperties();
 
+public: UFUNCTION() ACharacterActor* GetCharacterInCell();
+public: UFUNCTION() void SetCharacterInCell(ACharacterActor* newCharacterInCell);
 
 };

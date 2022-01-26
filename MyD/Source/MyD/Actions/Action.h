@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "../BoardCharacter.h"
+#include "../CharacterActor.h"
+#include "../Cells/HexCell.h"
 #include "Action.generated.h"
 
 /**
@@ -15,7 +16,7 @@ class MYD_API UAction : public UObject
 {
 	GENERATED_BODY()
 
-public: UFUNCTION() bool PerformAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter);
-public: UFUNCTION() virtual bool CanExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter);
-public: UFUNCTION() virtual void ExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter);
+public: UFUNCTION() bool PerformAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
+public: UFUNCTION() virtual bool CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
+public: UFUNCTION() virtual void ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
 };
