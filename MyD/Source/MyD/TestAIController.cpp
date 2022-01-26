@@ -2,7 +2,7 @@
 
 
 #include "TestAIController.h"
-#include "GridManager.h"
+#include "Cells/GridManager.h"
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 
 ATestAIController::ATestAIController()

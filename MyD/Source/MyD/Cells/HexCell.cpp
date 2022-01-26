@@ -4,6 +4,8 @@
 #include "HexCell.h"
 #include <Components/SceneComponent.h>
 #include <Components/StaticMeshComponent.h>
+#include "../CharacterActor.h"
+
 // Sets default values
 AHexCell::AHexCell()
 {
@@ -37,4 +39,14 @@ void AHexCell::ResetAStartProperties()
 	visited = false;
 	globalGoal = INFINITY;
 	localGoal = INFINITY;
+}
+
+ACharacterActor* AHexCell::GetCharacterInCell()
+{
+	return characterInCell;
+}
+
+void AHexCell::SetCharacterInCell(ACharacterActor* newCharacterInCell)
+{
+	characterInCell = newCharacterInCell;
 }

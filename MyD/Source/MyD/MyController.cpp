@@ -2,8 +2,8 @@
 
 
 #include "MyController.h"
-#include "HexCell.h"
-#include "GridManager.h"
+#include "Cells/HexCell.h"
+#include "Cells/GridManager.h"
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 
 AMyController::AMyController()

@@ -22,13 +22,13 @@ void ACombatGameMode::StartCombat()
 void ACombatGameMode::SetCombatOrder()
 {
 	TArray<AActor*> bufferActors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAndresPruebasCharacter::StaticClass(), bufferActors);//Cambiar clase de personaje
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACharacterActor::StaticClass(), bufferActors);//Cambiar clase de personaje
 
 	unsigned int numCharacters = bufferActors.Num();
 	turnOrderDataList.Empty();
 	for (unsigned int i = 0; i < numCharacters; ++i)
 	{
-		AAndresPruebasCharacter* bufferChar = Cast<AAndresPruebasCharacter>(bufferActors[i]);//Cambiar clase de personaje
+		ACharacterActor* bufferChar = Cast<ACharacterActor>(bufferActors[i]);//Cambiar clase de personaje
 		if (bufferChar)
 		{
 			int init = FMath::RandRange(1, 20);

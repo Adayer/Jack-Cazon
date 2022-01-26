@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "CharacterActor.generated.h"
 
+class AHexCell;
+
 UCLASS()
 class MYD_API ACharacterActor : public AActor
 {
@@ -21,8 +23,24 @@ public:
 		int armor;
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int damage;
+
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int movement;
+
+
+
+	//////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+		UTexture2D* iconTexture;
+
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+		int numActions;
+
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		int attackRange;
+
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		AHexCell* myCell;
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,5 +49,14 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	/////////////////////////////
+	UFUNCTION(BlueprintNativeEvent, Category = "Combat")
+		void StartTurn();
+
+public: UFUNCTION() void RecieveDamage(int32 damageAmount);
+
+public: UFUNCTION() int32 GetAttackPower();
+public: UFUNCTION() float GetAttackRange();
 
 };

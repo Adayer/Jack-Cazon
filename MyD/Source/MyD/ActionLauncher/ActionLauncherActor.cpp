@@ -26,6 +26,6 @@ void AActionLauncherActor::Tick(float DeltaTime)
 }
 
 void AActionLauncherActor::ExecuteAction() {
-	actionLauncherComponent->ExecuteAction(actionLauncherCharacter, actionRecieverCharacter);
+	actionLauncherComponent->ExecuteAction(actionLauncherCharacter, actionRecieverCell);
 }
 

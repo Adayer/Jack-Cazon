@@ -3,9 +3,10 @@
 
 #include "AttackAction.h"
 
-bool UAttackAction::CanExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter) {
+bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	FVector actionLauncherCharacterPosition = actionLauncherCharacter->GetActorLocation();
-	FVector actionRecieverCharacterPosition = actionRecieverCharacter->GetActorLocation();
+	//FVector actionRecieverCharacterPosition = actionRecieverCell->GetActorLocation();
+	FVector actionRecieverCharacterPosition = FVector();
 
 	if (FVector::Dist2D(actionLauncherCharacterPosition, actionRecieverCharacterPosition) < actionLauncherCharacter->GetAttackRange()) {
 		return true;
@@ -14,7 +15,7 @@ bool UAttackAction::CanExecuteAction(ABoardCharacter* actionLauncherCharacter, A
 	return false;
 }
 
-void UAttackAction::ExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter) {
+void UAttackAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 
-	actionRecieverCharacter->RecieveDamage(actionLauncherCharacter->GetAttackPower());	
+	//actionRecieverCell->RecieveDamage(actionLauncherCharacter->GetAttackPower());
 }

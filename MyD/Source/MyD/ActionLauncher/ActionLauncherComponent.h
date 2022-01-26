@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "../Actions/Action.h"
-#include "../BoardCharacter.h"
 #include "ActionLauncherComponent.generated.h"
 
 
@@ -28,5 +27,5 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-public: UFUNCTION() bool ExecuteAction(ABoardCharacter* actionLauncherCharacter, ABoardCharacter* actionRecieverCharacter);
+public: UFUNCTION() bool ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
 };
