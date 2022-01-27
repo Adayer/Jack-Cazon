@@ -30,6 +30,11 @@ void ACharacterActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+void ACharacterActor::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
 
 /////////////////////////////
 
