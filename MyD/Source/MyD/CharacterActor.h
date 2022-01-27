@@ -57,6 +57,6 @@ public:
 public: UFUNCTION() void RecieveDamage(int32 damageAmount);
 
 public: UFUNCTION() int32 GetAttackPower();
-public: UFUNCTION() float GetAttackRange();
+public: UFUNCTION() int GetAttackRange();
 
 };

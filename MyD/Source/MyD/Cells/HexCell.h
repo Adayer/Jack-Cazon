@@ -75,4 +75,6 @@ public:
 public: UFUNCTION() ACharacterActor* GetCharacterInCell();
 public: UFUNCTION() void SetCharacterInCell(ACharacterActor* newCharacterInCell);
 
+public: int DistanceToCell(AHexCell* otherCell);
+
 };

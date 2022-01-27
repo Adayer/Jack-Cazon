@@ -45,6 +45,6 @@ int32 ACharacterActor::GetAttackPower() {
 	return damage;
 }
 
-float ACharacterActor::GetAttackRange() {
+int ACharacterActor::GetAttackRange() {
 	return attackRange;
 }

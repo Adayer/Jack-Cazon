@@ -5,12 +5,9 @@
 
 bool UAction::PerformAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 
-	if (CanExecuteAction(actionLauncherCharacter, actionRecieverCell)) {
+	if (CanExecuteAction(actionLauncherCharacter, actionRecieverCell) && actionLauncherCharacter != nullptr && actionRecieverCell != nullptr) {
 		ExecuteAction(actionLauncherCharacter, actionRecieverCell);
 		return true;
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("Attack out of range"));
 	}
 
 	return false;

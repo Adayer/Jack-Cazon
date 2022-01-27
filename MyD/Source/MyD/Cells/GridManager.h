@@ -54,7 +54,6 @@ public:
 	void MovePawn();
 	/////////////////////////////////////////////////////////////////////////////
 
-
 private:
 	TArray<AHexCell*> path;
 	bool AStar(AHexCell* start, AHexCell* end, float maxSteps);
