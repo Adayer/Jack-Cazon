@@ -11,7 +11,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class MYD_API UAction : public UObject
 {
 	GENERATED_BODY()
