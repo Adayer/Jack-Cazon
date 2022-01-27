@@ -8,6 +8,15 @@ bool UFireExplosionAction::CanExecuteAction(ACharacterActor* actionLauncherChara
 }
 
 void UFireExplosionAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
-	UE_LOG(LogTemp, Warning, TEXT("This is the base clase for making actions, override ExecuteAction & CanExecuteAction methods to create new action effects"));
-	//GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams)
+	TArray<AHexCell*> affectedCells = TArray<AHexCell*>();
+	affectedCells.Add(actionRecieverCell);
+	affectedCells.Append(actionRecieverCell->neighbours);
+
+	ACharacterActor* actionRecieverCharacter = nullptr;
+	for (AHexCell* affectedCell : affectedCells) {
+		actionRecieverCharacter = affectedCell->GetCharacterInCell();
+		if (actionRecieverCharacter != nullptr) {
+			actionRecieverCharacter->RecieveMagicDamage(actionLauncherCharacter->GetMagicAttackPower());
+		}
+	}
 }

@@ -16,8 +16,11 @@ void ACharacterActor::BeginPlay()
 	
 	///////// TEMP
 	hp = 10;
+	currentHp = hp;
 	armor = 3;
+	magicArmor = 2;
 	damage = 5;
+	magicDamage = 5;
 	attackRange = 2;
 }
 
@@ -35,16 +38,31 @@ void ACharacterActor::StartTurn_Implementation()
 }
 
 void ACharacterActor::RecieveDamage(int32 damageAmount) {
-	hp -= (damageAmount - armor);
+	currentHp -= (damageAmount - armor);
 	if (hp <= 0) {
 		Destroy();
 	}
+}
+
+void ACharacterActor::RecieveMagicDamage(int32 damageAmount) {
+	currentHp -= (damageAmount - magicArmor);
+	if (currentHp <= 0) {
+		Destroy();
+	}
+}
+
+void ACharacterActor::RecieveHealing(int32 healAmount) {
+	currentHp = FMath::Min<int32>(hp, currentHp + healAmount);
 }
 
 int32 ACharacterActor::GetAttackPower() {
 	return damage;
 }
 
-float ACharacterActor::GetAttackRange() {
+int32 ACharacterActor::GetMagicAttackPower() {
+	return magicDamage;
+}
+
+int ACharacterActor::GetAttackRange() {
 	return attackRange;
 }

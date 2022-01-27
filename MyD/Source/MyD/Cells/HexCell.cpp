@@ -50,3 +50,8 @@ void AHexCell::SetCharacterInCell(ACharacterActor* newCharacterInCell)
 {
 	characterInCell = newCharacterInCell;
 }
+
+int AHexCell::DistanceToCell(AHexCell* otherCell)
+{
+	return FMath::Max<int32>(FMath::Abs<int32>(this->hexCoord.X - otherCell->hexCoord.X), FMath::Abs<int32>(this->hexCoord.Y - otherCell->hexCoord.Y));
+}

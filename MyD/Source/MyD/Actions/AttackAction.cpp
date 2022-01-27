@@ -4,18 +4,18 @@
 #include "AttackAction.h"
 
 bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
-	FVector actionLauncherCharacterPosition = actionLauncherCharacter->GetActorLocation();
-	//FVector actionRecieverCharacterPosition = actionRecieverCell->GetActorLocation();
-	FVector actionRecieverCharacterPosition = FVector();
-
-	if (FVector::Dist2D(actionLauncherCharacterPosition, actionRecieverCharacterPosition) < actionLauncherCharacter->GetAttackRange()) {
-		return true;
+	if (actionRecieverCell->GetCharacterInCell() == nullptr) {
+		return false;
 	}
 
-	return false;
+	if (actionLauncherCharacter->myCell->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetAttackRange()) {
+		return false;
+	}
+
+	return true;
 }
 
 void UAttackAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 
-	//actionRecieverCell->RecieveDamage(actionLauncherCharacter->GetAttackPower());
+	actionRecieverCell->GetCharacterInCell()->RecieveDamage(actionLauncherCharacter->GetAttackPower());
 }
