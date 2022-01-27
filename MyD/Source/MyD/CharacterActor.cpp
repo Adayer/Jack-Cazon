@@ -17,11 +17,11 @@ void ACharacterActor::BeginPlay()
 	///////// TEMP
 	hp = 10;
 	currentHp = hp;
-	armor = 3;
-	magicArmor = 2;
 	damage = 5;
 	magicDamage = 5;
-	attackRange = 2;
+	armor = 3;
+	magicArmor = 2;
+
 }
 
 // Called every frame

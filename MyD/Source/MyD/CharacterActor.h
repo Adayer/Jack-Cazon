@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerEditor/EnumRol.h"
+#include "Actions/Action.h"
 #include "GameFramework/Character.h"
 #include "CharacterActor.generated.h"
 
@@ -17,20 +19,24 @@ public:
 	// Sets default values for this actor's properties
 	ACharacterActor();
 
-	UPROPERTY(EditAnywhere, Category = "Attributes")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atributes")
 		int hp;
-	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Atributes")
 		int currentHp;
-	UPROPERTY(EditAnywhere, Category = "Attributes")
-		int armor;
-	UPROPERTY(EditAnywhere, Category = "Attributes")
-		int magicArmor;
-	UPROPERTY(EditAnywhere, Category = "Attributes")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atributes")
 		int damage;
-	UPROPERTY(EditAnywhere, Category = "Attributes")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atributes")
 		int magicDamage;
-	UPROPERTY(EditAnywhere, Category = "Attributes")
-		int movement;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atributes")
+		int armor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atributes")
+		int magicArmor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Atributes)
+		TArray<UAction*> Actions;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Atributes)
+		TEnumAsByte<Rol> Rol;		
+	
 
 
 
