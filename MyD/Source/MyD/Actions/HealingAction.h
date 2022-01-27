@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Action.h"
-#include "FireExplosionAction.generated.h"
+#include "HealingAction.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MYD_API UFireExplosionAction : public UAction
+class MYD_API UHealingAction : public UAction
 {
 	GENERATED_BODY()
 	

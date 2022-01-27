@@ -19,11 +19,16 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int hp;
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		int currentHp;
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int armor;
 	UPROPERTY(EditAnywhere, Category = "Attributes")
+		int magicArmor;
+	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int damage;
-
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+		int magicDamage;
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int movement;
 
@@ -55,8 +60,11 @@ public:
 		void StartTurn();
 
 public: UFUNCTION() void RecieveDamage(int32 damageAmount);
+public: UFUNCTION() void RecieveMagicDamage(int32 damageAmount);
+public: UFUNCTION() void RecieveHealing(int32 healAmount);
 
 public: UFUNCTION() int32 GetAttackPower();
+public: UFUNCTION() int32 GetMagicAttackPower();
 public: UFUNCTION() int GetAttackRange();
 
 };

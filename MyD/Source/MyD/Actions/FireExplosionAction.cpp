@@ -16,11 +16,7 @@ void UFireExplosionAction::ExecuteAction(ACharacterActor* actionLauncherCharacte
 	for (AHexCell* affectedCell : affectedCells) {
 		actionRecieverCharacter = affectedCell->GetCharacterInCell();
 		if (actionRecieverCharacter != nullptr) {
-			ApplyFireDamage(actionRecieverCharacter);
+			actionRecieverCharacter->RecieveMagicDamage(actionLauncherCharacter->GetMagicAttackPower());
 		}
 	}
-}
-
-void UFireExplosionAction::ApplyFireDamage(ACharacterActor* actionRecieverCharacter) {
-
 }
