@@ -34,6 +34,8 @@ public:
 	//UI
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 		TSubclassOf<UCombatInitiativeWidget> combatInitiativeWidgetClass;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		unsigned int NUM_PLAYERS = 4;
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Combat")
 		UCombatInitiativeWidget* combatInitiativeWidget;

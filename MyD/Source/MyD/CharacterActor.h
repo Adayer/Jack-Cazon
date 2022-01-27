@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Character.h"
 #include "CharacterActor.generated.h"
 
 class AHexCell;
 
 UCLASS()
-class MYD_API ACharacterActor : public AActor
+class MYD_API ACharacterActor : public ACharacter
 {
 	GENERATED_BODY()
 	
@@ -47,13 +47,17 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		AHexCell* myCell;
 
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	/////////////////////////////
 	UFUNCTION(BlueprintNativeEvent, Category = "Combat")
