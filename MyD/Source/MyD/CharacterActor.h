@@ -71,4 +71,7 @@ public: UFUNCTION() int32 GetAttackPower();
 public: UFUNCTION() int32 GetMagicAttackPower();
 public: UFUNCTION() int GetAttackRange();
 
+	  UFUNCTION()
+		  void SetIconTexture(UTexture2D* _texture) { iconTexture = _texture; }
+
 };

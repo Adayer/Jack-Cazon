@@ -18,9 +18,7 @@ class MYD_API ATestAIController : public AAIController
 
 public:
 	ATestAIController();
-	void WalkPath(TArray<AHexCell*>* _path);
-
-	AHexCell* currentCell;
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -28,7 +26,5 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	bool walking = false;
-	TArray<AHexCell*>* path;
-	float cooldown = 0;
+	
 };

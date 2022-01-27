@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "../Cells/HexCell.h"
-#include "../TestAIController.h"
+#include "../MyController.h"
 #include "GridManager.generated.h"
 
 UCLASS()
@@ -15,10 +15,7 @@ class MYD_API AGridManager : public AActor
 	
 	///////////////////////////////////////////////////////////
 public:
-	UPROPERTY(EditAnywhere)
-		APawn* testPawn;
-
-	ATestAIController* controller;
+	AMyController* controller;
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ACharacterActor> CharacterBPClass;
 
@@ -34,6 +31,11 @@ protected:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<AHexCell> BaseCell;
 
+	UPROPERTY(EditAnywhere)
+	UTexture2D* OrcTextureObject;
+	
+	UPROPERTY(EditAnywhere)
+	UTexture2D* HumanTextureObject;
 
 	float XOffset=86.5f;
 	float YOffset=75.f;

@@ -2,8 +2,8 @@
 
 
 #include "MyController.h"
-#include "Cells/HexCell.h"
 #include "Cells/GridManager.h"
+#include "CharacterActor.h"
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 
 AMyController::AMyController()
@@ -26,19 +26,53 @@ void AMyController::BeginPlay()
 
 void AMyController::Tick(float DeltaTime)
 {
-	FHitResult hitResult;
-	if(GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, hitResult))
+	if (Walking)
 	{
-		AHexCell* cell = Cast<AHexCell>(hitResult.Actor);
-		if (cell)
+		if (path.Num())
 		{
-			Grid->OnHoverCell(cell);
-
-			if (WasInputKeyJustPressed(EKeys::LeftMouseButton))
+			if (cooldown <= 0)
 			{
-				Grid->MovePawn();
+				currentCell = path.Pop();
+				GetPawn()->SetActorLocation(currentCell->GetActorLocation());
+				cooldown = 0.5f;
+			}
+			else
+			{
+				cooldown -= DeltaTime;
 			}
 		}
-
+		else
+		{
+			Cast<ACharacterActor>(GetPawn())->myCell = currentCell;
+			currentCell->SetCharacterInCell(Cast<ACharacterActor>(GetPawn()));
+			Walking = false;
+		}
 	}
+	else 
+	{
+		FHitResult hitResult;
+		if (GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, hitResult))
+		{
+			AHexCell* cell = Cast<AHexCell>(hitResult.Actor);
+			if (cell)
+			{
+				Grid->OnHoverCell(cell);
+
+				if (WasInputKeyJustPressed(EKeys::LeftMouseButton))
+				{
+					Grid->MovePawn();
+				}
+			}
+		}
+	}
+}
+
+void AMyController::MoveCharacter(TArray<AHexCell*>& _path)
+{
+	path = _path; //esto esta hecho super cutre, aedmas unavez que guarda el puntero no tendria que volver a pasarselo pero no me apetece pensar
+	if (currentCell)
+	{
+		currentCell->SetCharacterInCell(nullptr);
+	}
+	Walking = true;
 }
