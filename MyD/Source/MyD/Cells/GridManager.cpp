@@ -8,7 +8,13 @@
 // Sets default values
 AGridManager::AGridManager()
 {
-
+	const FString ORC_TEXTURE = "Texture2D'/Game/Andres/Sprite/OrcIcon.OrcIcon'";
+	ConstructorHelpers::FObjectFinder<UTexture2D> OrcTexture(*ORC_TEXTURE);
+	OrcTextureObject = OrcTexture.Object;
+	
+	const FString HUMAN_TEXTURE = "Texture2D'/Game/Andres/Sprite/HumanIcon.HumanIcon'";
+	ConstructorHelpers::FObjectFinder<UTexture2D> HumanTexture(*HUMAN_TEXTURE);
+	HumanTextureObject = HumanTexture.Object;
 }
 
 void AGridManager::SpawnCells()
@@ -34,7 +40,7 @@ void AGridManager::SpawnCells()
 
 	//////////////////////////////////////////////////////////////////////////////
 	//APawn* pawn = GetWorld()->SpawnActor<APawn>(testPawn, gridArray[0][0]->GetActorLocation(), FRotator::ZeroRotator);
-	controller = Cast<ATestAIController>(testPawn->GetController());
+	controller = Cast<AMyController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	//////////////////////////////////////////////////////////////////////////////
 
 	// Set neighbours
@@ -115,7 +121,16 @@ void AGridManager::SpawnCharacter()
 		ACharacterActor* newChar = GetWorld()->SpawnActor<ACharacterActor>(CharacterBPClass);
 		newChar->myCell = gridArray[randValueX][randValueY];
 		gridArray[randValueX][randValueY]->SetCharacterInCell(newChar);
-		newChar->SetActorLocation(SpawnLocation);	
+		newChar->SetActorLocation(SpawnLocation);
+
+		if (i % 2 == 0)
+		{
+			newChar->SetIconTexture(OrcTextureObject);//TextureFinder.Object;
+		}
+		else
+		{
+			newChar->SetIconTexture(HumanTextureObject);//TextureFinder.Object;
+		}
 	}
 }
 
@@ -131,9 +146,12 @@ void AGridManager::OnHoverCell(AHexCell* cell)
 		if(lastCell != NULL)lastCell->ResetMaterial();
 		//Calcular algoritmo
 
-		AHexCell* playerPos = controller->currentCell; // - - - - - - - - ->Setear variable en otra parte
+		//AHexCell* playerPos = Cast<ACharacterActor>(); // - - - - - - - - ->Setear variable en otra parte
+		ACombatGameMode* CombatGM = Cast<ACombatGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+		TArray<UTurnOrderData*>* turnData = CombatGM->GetTurnOrderDataList();
+		ACharacterActor* playerChar = (*turnData)[CombatGM->GetTurnIndex()]->GetCharacter();
 
-		cell->ChangeMaterial(AStar(playerPos, cell, 8));
+		cell->ChangeMaterial(AStar(playerChar->myCell, cell, 8));
 		lastCell = cell;
 	}
 }
@@ -145,7 +163,7 @@ void AGridManager::MovePawn()
 {
 	if (controller)
 	{
-		controller->WalkPath(&path);
+		controller->MoveCharacter(path);
 	}
 	
 }

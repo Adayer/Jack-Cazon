@@ -33,7 +33,7 @@ public:
 		tieBreakInitiative = -1;
 	}
 
-	UFUNCTION(BlueprintCallable, Category="Combat")
+	UFUNCTION()
 		ACharacterActor* GetCharacter() const { return character; }
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 		void SetCharacter(ACharacterActor* _character) { character = _character; }
@@ -47,4 +47,7 @@ public:
 		int  GetTieBreakInitiative() const { return tieBreakInitiative; }
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 		void SetTieBreakInitiative(int _initiative) { tieBreakInitiative = _initiative; }
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+		ACharacterActor* GetCharacterBP() const { return character; }
+
 };

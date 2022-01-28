@@ -60,7 +60,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 		UMaterial* invalidMat;
 
-	///Too ADDD
+	///Too ADD
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 		ACharacterActor* characterInCell;
 	
