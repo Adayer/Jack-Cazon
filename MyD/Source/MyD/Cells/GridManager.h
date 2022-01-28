@@ -19,6 +19,9 @@ public:
 		APawn* testPawn;
 
 	ATestAIController* controller;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<ACharacterActor> CharacterBPClass;
+
 	////////////////////////////////////////////////////////////
 protected:
 	UPROPERTY(EditAnywhere)
@@ -48,6 +51,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void SpawnCells();
+	UFUNCTION(BlueprintCallable)
+		void SpawnCharacter();
 
 	void OnHoverCell(AHexCell* Cell);
 	//////////////////////////////////////////////////////////////////////////////

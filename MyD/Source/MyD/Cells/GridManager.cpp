@@ -2,7 +2,9 @@
 
 
 #include "GridManager.h"
-
+#include "../TurnSystem/CombatGameMode.h"
+#include "Kismet/GameplayStatics.h"
+#include "../CharacterActor.h"
 // Sets default values
 AGridManager::AGridManager()
 {
@@ -93,6 +95,28 @@ void AGridManager::BeginPlay()
 	Super::BeginPlay();
 
 	SpawnCells();
+	SpawnCharacter();
+}
+
+void AGridManager::SpawnCharacter()
+{
+	unsigned int numChars = Cast<ACombatGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->NUM_PLAYERS;
+	for (unsigned int i = 0; i < numChars; ++i)
+	{
+		int32 randValueX;
+		int32 randValueY;
+		do
+		{
+			randValueX = FMath::RandRange(0, gridWidth - 1);
+			randValueY = FMath::RandRange(0, gridHeight - 1);
+		} while (gridArray[randValueX][randValueY]->GetCharacterInCell());
+
+		const FVector SpawnLocation = gridArray[randValueX][randValueY]->GetActorLocation();
+		ACharacterActor* newChar = GetWorld()->SpawnActor<ACharacterActor>(CharacterBPClass);
+		newChar->myCell = gridArray[randValueX][randValueY];
+		gridArray[randValueX][randValueY]->SetCharacterInCell(newChar);
+		newChar->SetActorLocation(SpawnLocation);	
+	}
 }
 
 //Metodo comprobar walkable
