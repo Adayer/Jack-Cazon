@@ -8,14 +8,13 @@
 // Sets default values
 AGridManager::AGridManager()
 {
-	
 	const FString ORC_TEXTURE = "Texture2D'/Game/Andres/Sprite/OrcIcon.OrcIcon'";
 	ConstructorHelpers::FObjectFinder<UTexture2D> OrcTexture(*ORC_TEXTURE);
 	OrcTextureObject = OrcTexture.Object;
 	
 	const FString HUMAN_TEXTURE = "Texture2D'/Game/Andres/Sprite/HumanIcon.HumanIcon'";
 	ConstructorHelpers::FObjectFinder<UTexture2D> HumanTexture(*HUMAN_TEXTURE);
-	OrcTextureObject = HumanTexture.Object;
+	HumanTextureObject = HumanTexture.Object;
 }
 
 void AGridManager::SpawnCells()
