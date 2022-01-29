@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Cells/HexCell.h"
 #include "MyController.generated.h"
 
 /**
@@ -19,9 +20,15 @@ class MYD_API AMyController : public APlayerController
 
 private:
 		AGridManager* Grid;
+		bool Walking = false;
+		TArray<AHexCell*> path;
+		float cooldown = 0;
+		AHexCell* currentCell;
 
 public:
 	AMyController();
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+		void MoveCharacter(TArray<AHexCell*>& _path);
 
 protected:
 	// Called when the game starts or when spawned

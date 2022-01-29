@@ -64,6 +64,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 		void ContinueCombat(); //Called to move to the next phase of combat
 
+	TArray<UTurnOrderData*>* GetTurnOrderDataList() { return &turnOrderDataList; }
+	int GetTurnIndex() { return turnIndex; }
 	//UI
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 		void ToggleInitiativeUI();

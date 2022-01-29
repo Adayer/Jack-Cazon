@@ -6,8 +6,6 @@
 void ACombatGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	StartCombat();
-	ContinueCombat();
 }
 
 void ACombatGameMode::StartCombat()
@@ -17,6 +15,7 @@ void ACombatGameMode::StartCombat()
 	roundIndex = 0;
 	SetCombatOrder();
 	ToggleInitiativeUI();
+	ContinueCombat();
 }
 
 void ACombatGameMode::SetCombatOrder()
