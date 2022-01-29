@@ -2,6 +2,8 @@
 
 
 #include "Action.h"
+#include "../CharacterActor.h"
+#include "../Cells/HexCell.h"
 
 bool UAction::PerformAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 

@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "PlayerEditor/EnumRol.h"
-#include "Actions/Action.h"
 #include "GameFramework/Character.h"
 #include "CharacterActor.generated.h"
 
 class AHexCell;
+class UAction;
 
 UCLASS()
 class MYD_API ACharacterActor : public ACharacter

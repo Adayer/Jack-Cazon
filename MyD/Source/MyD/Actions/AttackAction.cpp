@@ -2,6 +2,9 @@
 
 
 #include "AttackAction.h"
+#include "../CharacterActor.h"
+#include "../Cells/HexCell.h"
+
 
 bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	if (actionRecieverCell->GetCharacterInCell() == nullptr) {

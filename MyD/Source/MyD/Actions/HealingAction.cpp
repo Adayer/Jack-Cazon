@@ -2,6 +2,9 @@
 
 
 #include "HealingAction.h"
+#include "../CharacterActor.h"
+#include "../Cells/HexCell.h"
+
 
 bool UHealingAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
 {
