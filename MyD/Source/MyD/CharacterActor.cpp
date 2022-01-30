@@ -71,3 +71,11 @@ int32 ACharacterActor::GetMagicAttackPower() {
 int ACharacterActor::GetAttackRange() {
 	return attackRange;
 }
+AHexCell* ACharacterActor::GetMyCell()
+{
+	return myCell;
+}
+void ACharacterActor::SetCharacterCell(AHexCell* myNewCell) {
+	myCell = myNewCell;
+	SetActorLocation(myCell->GetActorLocation());
+}

@@ -4,7 +4,7 @@
 #include "GridManager.h"
 #include "../TurnSystem/CombatGameMode.h"
 #include "Kismet/GameplayStatics.h"
-#include "../CharacterActor.h"
+
 // Sets default values
 AGridManager::AGridManager()
 {
@@ -39,7 +39,6 @@ void AGridManager::SpawnCells()
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
-	//APawn* pawn = GetWorld()->SpawnActor<APawn>(testPawn, gridArray[0][0]->GetActorLocation(), FRotator::ZeroRotator);
 	controller = Cast<AMyController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	//////////////////////////////////////////////////////////////////////////////
 
@@ -101,10 +100,10 @@ void AGridManager::BeginPlay()
 	Super::BeginPlay();
 
 	SpawnCells();
-	SpawnCharacter();
+	SpawnCharacters();
 }
 
-void AGridManager::SpawnCharacter()
+void AGridManager::SpawnCharacters()
 {
 	unsigned int numChars = Cast<ACombatGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->NUM_PLAYERS;
 	for (unsigned int i = 0; i < numChars; ++i)
@@ -117,11 +116,9 @@ void AGridManager::SpawnCharacter()
 			randValueY = FMath::RandRange(0, gridHeight - 1);
 		} while (gridArray[randValueX][randValueY]->GetCharacterInCell());
 
-		const FVector SpawnLocation = gridArray[randValueX][randValueY]->GetActorLocation();
 		ACharacterActor* newChar = GetWorld()->SpawnActor<ACharacterActor>(CharacterBPClass);
-		newChar->myCell = gridArray[randValueX][randValueY];
-		gridArray[randValueX][randValueY]->SetCharacterInCell(newChar);
-		newChar->SetActorLocation(SpawnLocation);
+
+		PutCharacterInCell(newChar, gridArray[randValueX][randValueY]);
 
 		if (i % 2 == 0)
 		{
@@ -151,7 +148,7 @@ void AGridManager::OnHoverCell(AHexCell* cell)
 		TArray<UTurnOrderData*>* turnData = CombatGM->GetTurnOrderDataList();
 		ACharacterActor* playerChar = (*turnData)[CombatGM->GetTurnIndex()]->GetCharacter();
 
-		cell->ChangeMaterial(AStar(playerChar->myCell, cell, 8));
+		cell->ChangeMaterial(AStar(playerChar->GetMyCell(), cell, 8));
 		lastCell = cell;
 	}
 }
@@ -166,6 +163,18 @@ void AGridManager::MovePawn()
 		controller->MoveCharacter(path);
 	}
 	
+}
+bool AGridManager::PutCharacterInCell(ACharacterActor* placedCharacter, AHexCell* targetCell)
+{
+	if (targetCell == nullptr || targetCell->GetCharacterInCell() != nullptr || placedCharacter == nullptr) {
+		return false;
+	}
+
+	targetCell->SetCharacterInCell(placedCharacter);
+	placedCharacter->SetCharacterCell(targetCell);
+	placedCharacter->SetActorLocation(targetCell->GetActorLocation());
+
+	return true;
 }
 /// /////////////////////////////////////////////////////////////////////////
 

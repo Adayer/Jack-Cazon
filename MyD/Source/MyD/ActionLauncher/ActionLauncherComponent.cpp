@@ -48,3 +48,8 @@ bool UActionLauncherComponent::ExecuteAction(ACharacterActor* actionLauncherChar
 	
 	return true;
 }
+
+void UActionLauncherComponent::SetMyAction(UAction* newAction)
+{
+	myAction = newAction;
+}
