@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "../Cells/HexCell.h"
 #include "../MyController.h"
+#include "../CharacterActor.h"
 #include "GridManager.generated.h"
 
 UCLASS()
@@ -54,12 +55,14 @@ public:
 	//UFUNCTION(BlueprintCallable)
 	//	void SpawnCells();
 	UFUNCTION(BlueprintCallable)
-		void SpawnCharacter();
+		void SpawnCharacters();
 
 	void OnHoverCell(AHexCell* Cell);
 	//////////////////////////////////////////////////////////////////////////////
 	void MovePawn();
 	/////////////////////////////////////////////////////////////////////////////
+
+	bool PutCharacterInCell(ACharacterActor* placedCharacter, AHexCell* targetCell);
 
 private:
 	TArray<AHexCell*> path;

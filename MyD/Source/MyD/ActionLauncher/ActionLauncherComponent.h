@@ -28,4 +28,6 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public: UFUNCTION() bool ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
+
+public: void SetMyAction(UAction* newAction);
 };

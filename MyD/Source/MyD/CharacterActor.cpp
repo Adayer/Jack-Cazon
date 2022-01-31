@@ -44,7 +44,7 @@ void ACharacterActor::StartTurn_Implementation()
 
 void ACharacterActor::RecieveDamage(int32 damageAmount) {
 	currentHp -= (damageAmount - armor);
-	if (hp <= 0) {
+	if (currentHp <= 0) {
 		Destroy();
 	}
 }
@@ -52,12 +52,22 @@ void ACharacterActor::RecieveDamage(int32 damageAmount) {
 void ACharacterActor::RecieveMagicDamage(int32 damageAmount) {
 	currentHp -= (damageAmount - magicArmor);
 	if (currentHp <= 0) {
-		Destroy();
+		Die();
 	}
 }
 
 void ACharacterActor::RecieveHealing(int32 healAmount) {
 	currentHp = FMath::Min<int32>(hp, currentHp + healAmount);
+}
+
+void ACharacterActor::Block() {
+
+	armor += armor / 2;
+}
+
+void ACharacterActor::Die() {
+
+	Destroy();
 }
 
 int32 ACharacterActor::GetAttackPower() {
@@ -70,4 +80,12 @@ int32 ACharacterActor::GetMagicAttackPower() {
 
 int ACharacterActor::GetAttackRange() {
 	return attackRange;
+}
+AHexCell* ACharacterActor::GetMyCell()
+{
+	return myCell;
+}
+void ACharacterActor::SetCharacterCell(AHexCell* myNewCell) {
+	myCell = myNewCell;
+	SetActorLocation(myCell->GetActorLocation());
 }

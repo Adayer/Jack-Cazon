@@ -17,26 +17,27 @@ public:
 	// Sets default values for this actor's properties
 	ACharacterActor();
 
+private: 
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int hp;
+
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		int currentHp;
+
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int armor;
+
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int magicArmor;
+
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int damage;
+
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int magicDamage;
+
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int movement;
-
-
-
-	//////////////////
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
-		UTexture2D* iconTexture;
 
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int numActions;
@@ -44,8 +45,16 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		int attackRange;
 
+private:
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		AHexCell* myCell;
+
+
+public: 
+	//////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+		UTexture2D* iconTexture;
+
 
 
 protected:
@@ -66,6 +75,8 @@ public:
 public: UFUNCTION() void RecieveDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveMagicDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveHealing(int32 healAmount);
+public: UFUNCTION() void Block();
+private: UFUNCTION() void Die();
 
 public: UFUNCTION() int32 GetAttackPower();
 public: UFUNCTION() int32 GetMagicAttackPower();
@@ -73,5 +84,8 @@ public: UFUNCTION() int GetAttackRange();
 
 	  UFUNCTION()
 		  void SetIconTexture(UTexture2D* _texture) { iconTexture = _texture; }
+
+public: AHexCell* GetMyCell();
+public: void SetCharacterCell(AHexCell* myNewCell);
 
 };

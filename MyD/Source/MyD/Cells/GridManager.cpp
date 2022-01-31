@@ -4,8 +4,10 @@
 #include "GridManager.h"
 #include "../TurnSystem/CombatGameMode.h"
 #include "Kismet/GameplayStatics.h"
+
 #include "../CharacterActor.h"
 #include "../SpawnPoint.h"
+
 
 // Sets default values
 AGridManager::AGridManager()
@@ -97,16 +99,19 @@ AGridManager::AGridManager()
 //
 //}
 
+
 // Called when the game starts or when spawned
 void AGridManager::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 	//SpawnCells();
-	SpawnCharacter();
+	SpawnCharacters();
+
 }
 
-void AGridManager::SpawnCharacter()
+void AGridManager::SpawnCharacters()
 {
 	TArray<AActor*> AllSpawnPoints;
 	UGameplayStatics::GetAllActorsOfClass(this, ASpawnPoint::StaticClass(), AllSpawnPoints);
@@ -117,14 +122,15 @@ void AGridManager::SpawnCharacter()
 		ASpawnPoint* spawnPoint = Cast<ASpawnPoint>(sp);
 
 		ACharacterActor* newChar = GetWorld()->SpawnActor<ACharacterActor>(CharacterBPClass);
+
 		newChar->myCell = spawnPoint->cellOwner;
 		if (spawnPoint->cellOwner != NULL)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Neighbour num: %d"), spawnPoint->cellOwner->neighbours.Num());
-		}
-		
-		spawnPoint->cellOwner->SetCharacterInCell(newChar);
-		newChar->SetActorLocation(sp->GetActorLocation());
+		}		
+
+		PutCharacterInCell(newChar, spawnPoint->cellOwner);
+
 
 		if (spawnPoint->team)
 		{
@@ -181,7 +187,7 @@ void AGridManager::OnHoverCell(AHexCell* cell)
 		TArray<UTurnOrderData*>* turnData = CombatGM->GetTurnOrderDataList();
 		ACharacterActor* playerChar = (*turnData)[CombatGM->GetTurnIndex()]->GetCharacter();
 
-		cell->ChangeMaterial(AStar(playerChar->myCell, cell, 8));
+		cell->ChangeMaterial(AStar(playerChar->GetMyCell(), cell, 8));
 		lastCell = cell;
 	}
 }
@@ -196,6 +202,18 @@ void AGridManager::MovePawn()
 		controller->MoveCharacter(path);
 	}
 	
+}
+bool AGridManager::PutCharacterInCell(ACharacterActor* placedCharacter, AHexCell* targetCell)
+{
+	if (targetCell == nullptr || targetCell->GetCharacterInCell() != nullptr || placedCharacter == nullptr) {
+		return false;
+	}
+
+	targetCell->SetCharacterInCell(placedCharacter);
+	placedCharacter->SetCharacterCell(targetCell);
+	placedCharacter->SetActorLocation(targetCell->GetActorLocation());
+
+	return true;
 }
 /// /////////////////////////////////////////////////////////////////////////
 
