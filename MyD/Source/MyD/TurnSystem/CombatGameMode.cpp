@@ -6,6 +6,8 @@
 void ACombatGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
+	StartCombat();
 }
 
 void ACombatGameMode::StartCombat()
@@ -96,9 +98,20 @@ void ACombatGameMode::ContinueCombat()
 
 void ACombatGameMode::StartTurn()
 {
-	UpdateInitiativeUI();
-	currentCombatPhase = CombatPhase::WaitingForEndTurn;
-	turnOrderDataList[turnIndex]->GetCharacter()->StartTurn();
+	UTurnOrderData* currentTurnOrderData = turnOrderDataList[turnIndex];
+	if (currentTurnOrderData->GetCharacter() != nullptr) {
+		UpdateInitiativeUI();
+		currentCombatPhase = CombatPhase::WaitingForEndTurn;
+		currentTurnOrderData->GetCharacter()->StartTurn();
+	}
+	else {
+		turnOrderDataList.RemoveAt(turnIndex);
+
+		if (turnIndex >= turnOrderDataList.Num()) {
+			turnIndex = 0;
+		}
+	}
+	
 }
 
 void ACombatGameMode::EndTurn()
@@ -135,6 +148,8 @@ void ACombatGameMode::ToggleInitiativeUI()
 		combatInitiativeWidget->InitUI();
 		combatInitiativeWidget->AddToViewport();
 	}
+	
+	
 }
 
 void ACombatGameMode::UpdateInitiativeUI()
@@ -143,4 +158,9 @@ void ACombatGameMode::UpdateInitiativeUI()
 	{
 		combatInitiativeWidget->NextTurn();
 	}
+}
+
+ACharacterActor* ACombatGameMode::GetCharacterWithTurn()
+{
+	return turnOrderDataList[turnIndex]->GetCharacter();
 }

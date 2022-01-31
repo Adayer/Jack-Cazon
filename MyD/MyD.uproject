@@ -15,6 +15,20 @@
 				"UMG",
 				"AIModule"
 			]
+		},
+		{
+			"Name": "MyDEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"AdditionalDependencies": [
+				"Blutility"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "EditorScriptingUtilities",
+			"Enabled": true
 		}
 	]
 }

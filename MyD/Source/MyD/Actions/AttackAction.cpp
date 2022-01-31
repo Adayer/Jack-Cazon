@@ -11,7 +11,7 @@ bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, A
 		return false;
 	}
 
-	if (actionLauncherCharacter->myCell->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetAttackRange()) {
+	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetAttackRange()) {
 		return false;
 	}
 

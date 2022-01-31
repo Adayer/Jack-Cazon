@@ -29,3 +29,28 @@ void AActionLauncherActor::ExecuteAction() {
 	actionLauncherComponent->ExecuteAction(actionLauncherCharacter, actionRecieverCell);
 }
 
+void AActionLauncherActor::SetActionLaunchersAction(UAction* newAction)
+{
+	actionLauncherComponent->SetMyAction(newAction);
+}
+
+void AActionLauncherActor::SetActionLauncherCharacter(ACharacterActor* newActionLauncherCharacter)
+{
+	actionLauncherCharacter = newActionLauncherCharacter;
+}
+
+ACharacterActor* AActionLauncherActor::GetActionLauncherCharacter()
+{
+	return actionLauncherCharacter;
+}
+
+UFUNCTION(BlueprintCallable) void AActionLauncherActor::SetActionRecieverCell(AHexCell* newActionRecieverCell)
+{
+	actionRecieverCell = newActionRecieverCell;
+}
+
+UFUNCTION(BlueprintCallable)AHexCell* AActionLauncherActor::GetActionRecieverCell()
+{
+	return actionRecieverCell;
+}
+
