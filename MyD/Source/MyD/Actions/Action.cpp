@@ -5,7 +5,7 @@
 
 bool UAction::PerformAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 
-	if (CanExecuteAction(actionLauncherCharacter, actionRecieverCell) && actionLauncherCharacter != nullptr && actionRecieverCell != nullptr) {
+	if (actionLauncherCharacter != nullptr && actionRecieverCell != nullptr && CanExecuteAction(actionLauncherCharacter, actionRecieverCell)) {
 		ExecuteAction(actionLauncherCharacter, actionRecieverCell);
 		return true;
 	}

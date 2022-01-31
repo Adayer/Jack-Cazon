@@ -98,9 +98,20 @@ void ACombatGameMode::ContinueCombat()
 
 void ACombatGameMode::StartTurn()
 {
-	UpdateInitiativeUI();
-	currentCombatPhase = CombatPhase::WaitingForEndTurn;
-	turnOrderDataList[turnIndex]->GetCharacter()->StartTurn();
+	UTurnOrderData* currentTurnOrderData = turnOrderDataList[turnIndex];
+	if (currentTurnOrderData->GetCharacter() != nullptr) {
+		UpdateInitiativeUI();
+		currentCombatPhase = CombatPhase::WaitingForEndTurn;
+		currentTurnOrderData->GetCharacter()->StartTurn();
+	}
+	else {
+		turnOrderDataList.RemoveAt(turnIndex);
+
+		if (turnIndex >= turnOrderDataList.Num()) {
+			turnIndex = 0;
+		}
+	}
+	
 }
 
 void ACombatGameMode::EndTurn()

@@ -75,6 +75,8 @@ public:
 public: UFUNCTION() void RecieveDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveMagicDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveHealing(int32 healAmount);
+public: UFUNCTION() void Block();
+private: UFUNCTION() void Die();
 
 public: UFUNCTION() int32 GetAttackPower();
 public: UFUNCTION() int32 GetMagicAttackPower();
