@@ -2,10 +2,15 @@
 
 
 #include "CombatGameMode.h"
+#include "../Cells/GridManager.h"
 
 void ACombatGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	TArray<AActor*> GridManagers;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridManager::StaticClass(), GridManagers);
+
+	Cast<AGridManager>(GridManagers[0])->SpawnCharacters();
 
 	StartCombat();
 }

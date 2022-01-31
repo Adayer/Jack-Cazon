@@ -107,7 +107,7 @@ void AGridManager::BeginPlay()
 
 
 	//SpawnCells();
-	SpawnCharacters();
+	//SpawnCharacters();
 
 }
 

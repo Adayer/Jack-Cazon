@@ -14,14 +14,6 @@ void ACharacterActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	///////// TEMP
-	hp = 10;
-	currentHp = hp;
-	damage = 5;
-	magicDamage = 5;
-	armor = 3;
-	magicArmor = 2;
-
 }
 
 // Called every frame
