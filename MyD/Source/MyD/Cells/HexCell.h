@@ -8,10 +8,12 @@
 
 class ACharacterActor;
 
-UENUM()
+UENUM(BlueprintType)
 enum class ECellType : uint8
 {
-	Base
+	Base,
+	Water,
+	Obstacle
 
 };
 
@@ -30,12 +32,17 @@ public:
 //		A STAR PROPERTIES
 ////////////////////////////////////////////
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite) //Asociar a tipo de celda?
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite) 
 		int weight = 1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+		ECellType cellType;
 
 	AHexCell* parent = NULL;
 	bool visited = false;
 	bool free = true;
+
+	UPROPERTY(EditAnywhere)
 	TArray<AHexCell*> neighbours;
 	float globalGoal = INFINITY;
 	float localGoal = INFINITY;
@@ -43,16 +50,14 @@ public:
 
 	/////////////////////////////////////////
 
-protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-		ECellType cellType;
+		UMaterial* defaultMat;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 		UStaticMeshComponent* cellMesh;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-		UMaterial* defaultMat;
+protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 		UMaterial* validMat;
