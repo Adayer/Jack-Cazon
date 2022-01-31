@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "ActionLauncherComponent.h"
+#include "../Actions/Action.h"
 #include "ActionLauncherActor.generated.h"
 
 UCLASS()
@@ -13,8 +14,8 @@ class MYD_API AActionLauncherActor : public AActor
 	GENERATED_BODY()
 
 private: UPROPERTY() UActionLauncherComponent* actionLauncherComponent;
-private: UPROPERTY(EditAnywhere) ACharacterActor* actionLauncherCharacter;
-private: UPROPERTY(EditAnywhere) AHexCell* actionRecieverCell;
+private: UPROPERTY(VisibleAnywhere) ACharacterActor* actionLauncherCharacter;
+private: UPROPERTY(VisibleAnywhere) AHexCell* actionRecieverCell;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -29,4 +30,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public: UFUNCTION(BlueprintCallable) void ExecuteAction();
+public: UFUNCTION(BlueprintCallable) void SetActionLaunchersAction(UAction* newAction);
+
+public: UFUNCTION(BlueprintCallable) void SetActionLauncherCharacter(ACharacterActor* newActionLauncherCharacter);
+public: UFUNCTION(BlueprintCallable) ACharacterActor* GetActionLauncherCharacter();
+public: UFUNCTION(BlueprintCallable) void SetActionRecieverCell(AHexCell* newActionRecieverCell);
+public: UFUNCTION(BlueprintCallable) AHexCell* GetActionRecieverCell();
 };

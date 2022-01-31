@@ -6,6 +6,8 @@
 void ACombatGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
+	StartCombat();
 }
 
 void ACombatGameMode::StartCombat()
@@ -135,6 +137,8 @@ void ACombatGameMode::ToggleInitiativeUI()
 		combatInitiativeWidget->InitUI();
 		combatInitiativeWidget->AddToViewport();
 	}
+	
+	
 }
 
 void ACombatGameMode::UpdateInitiativeUI()
@@ -143,4 +147,9 @@ void ACombatGameMode::UpdateInitiativeUI()
 	{
 		combatInitiativeWidget->NextTurn();
 	}
+}
+
+ACharacterActor* ACombatGameMode::GetCharacterWithTurn()
+{
+	return turnOrderDataList[turnIndex]->GetCharacter();
 }

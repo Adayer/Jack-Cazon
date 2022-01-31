@@ -71,6 +71,10 @@ public:
 		void ToggleInitiativeUI();
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 		void UpdateInitiativeUI();
+
+	//Returns the character that is realizing his turn
+public: UFUNCTION(BlueprintCallable, Category = "Combat") ACharacterActor* GetCharacterWithTurn();
+
 protected:
 	void BeginPlay() override;
 private:
