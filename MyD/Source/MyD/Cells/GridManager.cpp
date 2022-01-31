@@ -123,7 +123,7 @@ void AGridManager::SpawnCharacters()
 
 		ACharacterActor* newChar = GetWorld()->SpawnActor<ACharacterActor>(CharacterBPClass);
 
-		newChar->myCell = spawnPoint->cellOwner;
+		newChar->SetCharacterCell(spawnPoint->cellOwner);
 		if (spawnPoint->cellOwner != NULL)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Neighbour num: %d"), spawnPoint->cellOwner->neighbours.Num());
