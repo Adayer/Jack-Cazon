@@ -116,7 +116,6 @@ void ACombatGameMode::StartTurn()
 			turnIndex = 0;
 		}
 	}
-	
 }
 
 void ACombatGameMode::EndTurn()
@@ -129,6 +128,25 @@ void ACombatGameMode::EndTurn()
 			turnOrderDataList[i]->GetCharacterBP()->Destroy();
 			turnOrderDataList.RemoveAt(i);
 		}
+	}
+
+	int numAliveA = 0;
+	int numAliveB = 0;
+	for (int32 i = 0; i < turnOrderDataList.Num(); ++i)
+	{
+		if (turnOrderDataList[i]->GetCharacterBP()->GetTeam())
+		{
+			++numAliveA;
+		}
+		else
+		{
+			++numAliveB;
+		}
+	}
+
+	if (numAliveA == 0 || numAliveB == 0)
+	{
+		UGameplayStatics::OpenLevel(GetWorld(), "CharacterEditMap");
 	}
 	
 	ToggleInitiativeUI();
@@ -167,8 +185,6 @@ void ACombatGameMode::ToggleInitiativeUI()
 		combatInitiativeWidget->InitUI();
 		combatInitiativeWidget->AddToViewport();
 	}
-	
-	
 }
 
 void ACombatGameMode::UpdateInitiativeUI()

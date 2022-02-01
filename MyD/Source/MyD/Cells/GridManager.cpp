@@ -4,6 +4,7 @@
 #include "GridManager.h"
 #include "../TurnSystem/CombatGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/StaticMeshComponent.h"
 
 #include "../CharacterActor.h"
 #include "../SpawnPoint.h"
@@ -12,13 +13,17 @@
 // Sets default values
 AGridManager::AGridManager()
 {
-	const FString ORC_TEXTURE = "Texture2D'/Game/Andres/Sprite/OrcIcon.OrcIcon'";
-	ConstructorHelpers::FObjectFinder<UTexture2D> OrcTexture(*ORC_TEXTURE);
-	OrcTextureObject = OrcTexture.Object;
+	const FString ARCHER_TEXTURE = "Texture2D'/Game/Images/RolesImages/IconRolArcher.IconRolArcher'";
+	ConstructorHelpers::FObjectFinder<UTexture2D> ArcherTexture(*ARCHER_TEXTURE);
+	ArcherTextureObject = ArcherTexture.Object;
 	
-	const FString HUMAN_TEXTURE = "Texture2D'/Game/Andres/Sprite/HumanIcon.HumanIcon'";
-	ConstructorHelpers::FObjectFinder<UTexture2D> HumanTexture(*HUMAN_TEXTURE);
-	HumanTextureObject = HumanTexture.Object;
+	const FString TANK_TEXTURE = "Texture2D'/Game/Images/RolesImages/IconRoleTank.IconRoleTank'";
+	ConstructorHelpers::FObjectFinder<UTexture2D> TankTexture(*TANK_TEXTURE);
+	TankTextureObject = TankTexture.Object;
+	
+	const FString MAGUE_TEXTURE = "Texture2D'/Game/Images/RolesImages/IconRolMague.IconRolMague'";
+	ConstructorHelpers::FObjectFinder<UTexture2D> MagueTexture(*MAGUE_TEXTURE);
+	MagueTextureObject = MagueTexture.Object;
 }
 
 //void AGridManager::SpawnCells()
@@ -133,15 +138,44 @@ void AGridManager::SpawnCharacters()
 
 		bool team = spawnPoint->team;
 		newChar->SetTeam(spawnPoint->team);
-
-		if (spawnPoint->team)
+		if (newChar->GetTeam())
 		{
-			newChar->SetIconTexture(HumanTextureObject);//TextureFinder.Object;
+			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+			MeshComponent->SetMaterial(0, aTeamMat);
 		}
 		else
 		{
-			newChar->SetIconTexture(OrcTextureObject);//TextureFinder.Object;			
+			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+			MeshComponent->SetMaterial(0, bTeamMat);
 		}
+
+		switch (newChar->GetRol())
+		{
+		case Rol::Archer:
+			{
+			
+			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+			MeshComponent->SetStaticMesh(archerMesh);
+			newChar->SetIconTexture(ArcherTextureObject);
+
+				break;
+			}
+		case Rol::Melee:
+			{
+			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+			MeshComponent->SetStaticMesh(tankMesh);
+			newChar->SetIconTexture(TankTextureObject);
+				break;
+			}
+		case Rol::Mague:
+			{
+			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+			MeshComponent->SetStaticMesh(magueMesh);
+			newChar->SetIconTexture(MagueTextureObject);
+				break;
+			}
+		}
+
 	}
 
 //	unsigned int numChars = Cast<ACombatGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->NUM_PLAYERS;

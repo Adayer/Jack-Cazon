@@ -2,6 +2,8 @@
 
 
 #include "PoisonAction.h"
+#include "../Cells/HexCell.h"
+#include "../CharacterActor.h"
 #include "AtomicActions/DamageAtomicAction.h"
 
 bool UPoisonAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
