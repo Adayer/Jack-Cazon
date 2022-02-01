@@ -99,7 +99,37 @@ void UCellEditorWidget::CreateSpawnPoint(bool team)
 	}
 }
 
+void UCellEditorWidget::RemoveCell()
+{
+	TArray<AActor*> selection = UEditorLevelLibrary::GetSelectedLevelActors();
 
+	for (AActor* selected : selection)
+	{
+		AHexCell* cell = Cast<AHexCell>(selected);
+
+		if (cell)
+		{
+			for (auto neighbour : cell->neighbours)
+			{
+				neighbour->neighbours.Remove(cell);
+			}
+			UEditorLevelLibrary::DestroyActor(selected);
+		}
+	}
+}
+
+void UCellEditorWidget::Reset()
+{
+	TArray<AActor*> allCells = UEditorLevelLibrary::GetAllLevelActors();
+	for (auto actor : allCells)
+	{
+		if (Cast<AHexCell>(actor) || Cast<ASpawnPoint>(actor))
+		{
+			UEditorLevelLibrary::DestroyActor(actor);
+		}
+	}
+
+}
 
 void UCellEditorWidget::ChangeCellType(ECellType type)
 {
