@@ -86,9 +86,9 @@ public: UFUNCTION(BlueprintCallable) void SetArmor(int _armor) {
 };
 public: UFUNCTION(BlueprintCallable) void SetMagicArmor(int _magicArmor) {
 
-	if (_magicArmor > 19)
+	if (_magicArmor > 20)
 	{
-		magicArmor = 19;
+		magicArmor = 20;
 	}
 	else if (_magicArmor < 1)
 	{
@@ -134,8 +134,10 @@ public: UFUNCTION(BlueprintCallable) void SetRol(TEnumAsByte<Rol> _rol) { player
 public: UFUNCTION(BlueprintCallable) void SetActions(TSubclassOf<UAction> _actions) { playerActions = _actions; };
 
 	  UFUNCTION(BlueprintCallable)
-		USavedPlayerData* USavedPlayerDataInit();
+		  USavedPlayerData* USavedPlayerDataInit();
 
+	  UFUNCTION(BlueprintCallable)
+		  USavedPlayerData* GetItem();
 
-USavedPlayerData();
+	USavedPlayerData();
 };
