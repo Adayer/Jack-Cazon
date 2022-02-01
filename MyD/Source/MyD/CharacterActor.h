@@ -45,7 +45,7 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		int attackRange;
 
-private:
+public:
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		AHexCell* myCell;
 

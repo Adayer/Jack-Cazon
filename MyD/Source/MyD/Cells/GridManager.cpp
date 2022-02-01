@@ -222,6 +222,14 @@ float Heuristic(AHexCell* a, AHexCell* b)
 	return (FMath::Abs(a->hexCoord.X - b->hexCoord.X) + FMath::Abs(a->hexCoord.Y - b->hexCoord.Y) + FMath::Abs(a->hexCoord.X + a->hexCoord.Y - b->hexCoord.X - b->hexCoord.Y)) / 2;
 }
 
+void ResetAStartCells(TArray<AHexCell*> toReset)
+{
+	for (auto cell : toReset)
+	{
+		cell->ResetAStartProperties();
+	}
+}
+
 bool AGridManager::AStar(AHexCell* start, AHexCell* end, float maxSteps)
 {
 	path.Empty();
@@ -246,7 +254,9 @@ bool AGridManager::AStar(AHexCell* start, AHexCell* end, float maxSteps)
 		start->globalGoal = Heuristic(start, end);
 
 		TArray<AHexCell*> toCheckList;
+		TArray<AHexCell*> toReset;
 		toCheckList.Add(start);
+		toReset.Add(start);
 
 		while (toCheckList.Num())
 		{
@@ -274,6 +284,8 @@ bool AGridManager::AStar(AHexCell* start, AHexCell* end, float maxSteps)
 						neighbour->localGoal = potentialLocalGoal;
 
 						neighbour->globalGoal = neighbour->localGoal + Heuristic(neighbour, end);
+
+						toReset.AddUnique(neighbour);
 					}
 
 					//Comprueba que los "pasos" hasta la casilla comprobada sea menor que los pasos maximos
@@ -293,8 +305,11 @@ bool AGridManager::AStar(AHexCell* start, AHexCell* end, float maxSteps)
 				path.Add(current);
 				current = current->parent;
 			}
+
+			ResetAStartCells(toReset);
 			return true;
 		}
+		ResetAStartCells(toReset);
 	}
 
 	return false;
