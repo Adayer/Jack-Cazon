@@ -1,5 +1,5 @@
 #include "CharacterActor.h"
-
+#include "Actions/Action.h"
 #include "Cells/HexCell.h"
 #include "Actions/AtomicActions/ModifyArmorAtomicAction.h"
 
