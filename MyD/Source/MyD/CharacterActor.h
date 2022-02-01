@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "DataStructures/ActionsQueue.h"
 #include "CharacterActor.generated.h"
 
 class AHexCell;
@@ -49,6 +50,15 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		AHexCell* myCell;
 
+/// <summary>
+/// Actions executed at the start of character's turn
+/// </summary>
+private: UPROPERTY(VisibleAnywhere, Category = "Attributes") UActionsQueue* startTurnActions;
+
+/// <summary>
+/// Actions executed every Tick function call
+/// </summary>
+private: UPROPERTY(VisibleAnywhere, Category = "Attributes") UActionsQueue* tickActions;
 
 public: 
 	//////////////////
@@ -74,13 +84,20 @@ public:
 
 public: UFUNCTION() void RecieveDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveMagicDamage(int32 damageAmount);
+public: UFUNCTION() void RecieveDirectDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveHealing(int32 healAmount);
 public: UFUNCTION() void Block();
+public: UFUNCTION()	void ModifyArmor(int armorVariation);
 private: UFUNCTION() void Die();
+
+public: UFUNCTION() void AddStartingTurnAction(UAtomicAction* startingTurnAction, int turnsLeftToExecuteAction);
+public: UFUNCTION() void AddStartingTurnActionRepeatable(UAtomicAction* startingTurnAction, int numTurnsExecutingAction);
+public: UFUNCTION() void AddTickAction(UAtomicAction* tickAction, float secondsToExecuteAction);
 
 public: UFUNCTION() int32 GetAttackPower();
 public: UFUNCTION() int32 GetMagicAttackPower();
 public: UFUNCTION() int GetAttackRange();
+public: UFUNCTION() int GetMovementRange();
 
 	  UFUNCTION()
 		  void SetIconTexture(UTexture2D* _texture) { iconTexture = _texture; }

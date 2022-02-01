@@ -17,8 +17,11 @@ class MYD_API UActionsQueue : public UObject
 	GENERATED_BODY()
 
 private: TArray<UAtomicAction*> atomicActionsQueue;
-private: TArray<float> timeUnits;
+private: TArray<float*> timeUnits;
 
-private: void Push(UAtomicAction* queuedAction, float unitTime);
-private: TArray<UAtomicAction*> Pop();
+public: UActionsQueue();
+
+public: void Push(UAtomicAction* queuedAction, float unitTime);
+public: TArray<UAtomicAction*> Pop();
+public: void UpdateTimeUnits(float timeUnitsElapsed);
 };

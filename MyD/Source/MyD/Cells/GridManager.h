@@ -68,6 +68,8 @@ private:
 	TArray<AHexCell*> path;
 	bool AStar(AHexCell* start, AHexCell* end, float maxSteps);
 
+public: TArray<AHexCell*>* GetAStarPath(AHexCell* start, AHexCell* end, float maxSteps);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

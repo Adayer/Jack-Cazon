@@ -300,4 +300,10 @@ bool AGridManager::AStar(AHexCell* start, AHexCell* end, float maxSteps)
 	return false;
 }
 
+TArray<AHexCell*>* AGridManager::GetAStarPath(AHexCell* start, AHexCell* end, float maxSteps)
+{
+	AStar(start, end, maxSteps);
+	return &path;
+}
+
 

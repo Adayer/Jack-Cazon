@@ -26,13 +26,14 @@ class MYD_API AHexCell : public AActor
 
 
 public:
+	UPROPERTY(VisibleAnywhere)
 	FIntPoint hexCoord;
 
 /////////////////////////////////////////////
 //		A STAR PROPERTIES
 ////////////////////////////////////////////
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite) 
+	UPROPERTY(VisibleAnywhere) 
 		int weight = 1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)

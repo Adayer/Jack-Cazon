@@ -10,6 +10,7 @@ bool UAction::PerformAction(ACharacterActor* actionLauncherCharacter, AHexCell* 
 		return true;
 	}
 
+	UE_LOG(LogTemp, Warning, TEXT("The conditions for performing the action are not met"));
 	return false;
 }
 
