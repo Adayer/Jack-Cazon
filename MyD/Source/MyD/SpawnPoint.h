@@ -19,6 +19,8 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	AHexCell* cellOwner;
+	
+	UPROPERTY()
 	bool team = false;
 
 	UPROPERTY(EditAnywhere)

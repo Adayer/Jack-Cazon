@@ -18,9 +18,9 @@ void ACharacterActor::BeginPlay()
 	///////// TEMP
 	hp = 10;
 	currentHp = hp;
-	armor = 3;
+	armor = 1;
 	magicArmor = 2;
-	damage = 5;
+	damage = 15;
 	magicDamage = 5;
 	attackRange = 2;
 	movement = 5;
@@ -66,7 +66,8 @@ void ACharacterActor::StartTurn_Implementation()
 void ACharacterActor::RecieveDamage(int32 damageAmount) {
 	currentHp -= (damageAmount - armor);
 	if (currentHp <= 0) {
-		Destroy();
+		Die();
+		
 	}
 }
 
@@ -81,7 +82,7 @@ void ACharacterActor::RecieveDirectDamage(int32 damageAmount)
 {
 	currentHp -= damageAmount;
 	if (currentHp <= 0) {
-		Destroy();
+		Die();
 	}
 }
 
@@ -103,8 +104,7 @@ void ACharacterActor::ModifyArmor(int armorVariation) {
 }
 
 void ACharacterActor::Die() {
-
-	Destroy();
+	SetActorHiddenInGame(true);
 }
 
 void ACharacterActor::AddStartingTurnAction(UAtomicAction* startingTurnAction, int turnsLeftToExecuteAction)

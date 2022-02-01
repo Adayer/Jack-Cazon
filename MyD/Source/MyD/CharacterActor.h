@@ -45,6 +45,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		int attackRange;
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		bool team;
+
 
 public:
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
@@ -64,9 +67,6 @@ public:
 	//////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 		UTexture2D* iconTexture;
-
-
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -104,5 +104,13 @@ public: UFUNCTION() int GetMovementRange();
 
 public: AHexCell* GetMyCell();
 public: void SetCharacterCell(AHexCell* myNewCell);
+
+public:
+	UFUNCTION()
+		int GetCurrentHP() { return currentHp; }
+	UFUNCTION(BlueprintCallable, Category="Combat")
+		bool GetTeam() { return team; }
+	UFUNCTION()
+		void SetTeam(bool _team) { team = _team; }
 
 };

@@ -116,15 +116,29 @@ void ACombatGameMode::StartTurn()
 
 void ACombatGameMode::EndTurn()
 {
-	//TODO:End of Combat Check
+	for (int32 i = (turnOrderDataList.Num() - 1); i >= 0; --i)
+	{
+		ACharacterActor* charToCheck = turnOrderDataList[i]->GetCharacterBP();
+		if (charToCheck->GetCurrentHP() <= 0)
+		{
+			turnOrderDataList[i]->GetCharacterBP()->Destroy();
+			turnOrderDataList.RemoveAt(i);
+		}
+	}
+	
+	ToggleInitiativeUI();
+	ToggleInitiativeUI();
+
 	//EndCombat();
+	
 	++turnIndex;
 	if(turnIndex >= turnOrderDataList.Num())
 	{ 
 		turnIndex = 0;
 	}
 	currentCombatPhase = CombatPhase::StartingTurn;
-	ContinueCombat();//Mirar si esta recursividad la lia o no
+	
+	ContinueCombat();
 }
 
 void ACombatGameMode::EndCombat()

@@ -131,6 +131,8 @@ void AGridManager::SpawnCharacters()
 
 		PutCharacterInCell(newChar, spawnPoint->cellOwner);
 
+		bool team = spawnPoint->team;
+		newChar->SetTeam(spawnPoint->team);
 
 		if (spawnPoint->team)
 		{
