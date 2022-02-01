@@ -20,6 +20,20 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ACharacterActor> CharacterBPClass;
 
+	UPROPERTY(EditAnywhere)
+		UMaterial* aTeamMat;
+
+	UPROPERTY(EditAnywhere)
+		UMaterial* bTeamMat;
+
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* archerMesh;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* tankMesh;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* magueMesh;
+
+
 	////////////////////////////////////////////////////////////
 protected:
 	//UPROPERTY(EditAnywhere)
@@ -33,10 +47,14 @@ protected:
 	//	TSubclassOf<AHexCell> BaseCell;
 
 	UPROPERTY(EditAnywhere)
-	UTexture2D* OrcTextureObject;
+	UTexture2D* ArcherTextureObject;
 	
 	UPROPERTY(EditAnywhere)
-	UTexture2D* HumanTextureObject;
+	UTexture2D* TankTextureObject;
+	
+	UPROPERTY(EditAnywhere)
+	UTexture2D* MagueTextureObject;
+	
 
 	//float XOffset=86.5f;
 	//float YOffset=75.f;
@@ -67,6 +85,8 @@ public:
 private:
 	TArray<AHexCell*> path;
 	bool AStar(AHexCell* start, AHexCell* end, float maxSteps);
+
+public: TArray<AHexCell*>* GetAStarPath(AHexCell* start, AHexCell* end, float maxSteps);
 
 protected:
 	// Called when the game starts or when spawned

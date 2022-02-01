@@ -2,6 +2,9 @@
 
 
 #include "FireExplosionAction.h"
+#include "../CharacterActor.h"
+#include "../Cells/HexCell.h"
+
 
 bool UFireExplosionAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	return true;

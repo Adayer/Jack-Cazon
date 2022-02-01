@@ -2,6 +2,7 @@
 
 
 #include "BlockAction.h"
+#include "../CharacterActor.h"
 
 bool UBlockAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	

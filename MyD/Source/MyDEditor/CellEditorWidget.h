@@ -37,6 +37,12 @@ public:
 		void CreateSpawnPoint(bool team);
 
 	UFUNCTION(BlueprintCallable)
+		void RemoveCell();
+
+	UFUNCTION(BlueprintCallable)
+		void Reset();
+
+	UFUNCTION(BlueprintCallable)
 	void ChangeCellType(ECellType type); //El enum esta definido?
 
 	//		M A T E R I A L S
