@@ -9,6 +9,7 @@ bool UAction::PerformAction(ACharacterActor* actionLauncherCharacter, AHexCell* 
 
 	if (actionLauncherCharacter != nullptr && actionRecieverCell != nullptr && CanExecuteAction(actionLauncherCharacter, actionRecieverCell)) {
 		ExecuteAction(actionLauncherCharacter, actionRecieverCell);
+		actionLauncherCharacter->IncreaseActionsExecuted();
 		return true;
 	}
 

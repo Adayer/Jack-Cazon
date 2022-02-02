@@ -25,6 +25,9 @@ void ACharacterActor::BeginPlay()
 	attackRange = 2;
 	movement = 5;
 
+	numActions = 2;
+	actionsExecuted = 0;
+
 	/////// Puede ser k diesen erro si se hacen los new en el constructor
 	startTurnActions = NewObject<UActionsQueue>();
 	tickActions = NewObject<UActionsQueue>();
@@ -61,6 +64,8 @@ void ACharacterActor::StartTurn_Implementation()
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("Start turn"));
+
+	actionsExecuted = 0;
 }
 
 void ACharacterActor::RecieveDamage(int32 damageAmount) {
@@ -122,6 +127,21 @@ void ACharacterActor::AddStartingTurnActionRepeatable(UAtomicAction* startingTur
 void ACharacterActor::AddTickAction(UAtomicAction* startingTurnAction, float secondsToExecuteAction)
 {
 	tickActions->Push(startingTurnAction, secondsToExecuteAction);
+}
+
+int ACharacterActor::GetNumActions()
+{
+	return numActions;
+}
+
+int ACharacterActor::GetActionsExecuted()
+{
+	return actionsExecuted;
+}
+
+void ACharacterActor::IncreaseActionsExecuted()
+{
+	++actionsExecuted;
 }
 
 int32 ACharacterActor::GetAttackPower() {

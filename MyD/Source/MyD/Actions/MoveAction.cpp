@@ -9,15 +9,17 @@
 bool UMoveAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	UE_LOG(LogTemp, Warning, TEXT("Starting comprobations of Move Action"));
 
-	if (actionRecieverCell->GetCharacterInCell() == nullptr) {
-		UE_LOG(LogTemp, Warning, TEXT("No character in destiny cell"));
+	if (actionRecieverCell->GetCharacterInCell() != nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Destiny cell occuped"));
+		return false;
 	}
 
-	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) <= actionLauncherCharacter->GetMovementRange()) {
-		UE_LOG(LogTemp, Warning, TEXT("Cell can be accesed"));
+	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetMovementRange()) {
+		UE_LOG(LogTemp, Warning, TEXT("Cell out of moving range"));
+		return false;
 	}
 
-	return actionRecieverCell->GetCharacterInCell() == nullptr && actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) <= actionLauncherCharacter->GetMovementRange();
+	return true;
 }
 
 void UMoveAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
