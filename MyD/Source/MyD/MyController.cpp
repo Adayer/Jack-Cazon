@@ -68,6 +68,17 @@ void AMyController::Tick(float DeltaTime)
 	}
 	*/
 	
+	FHitResult hitResult;
+	if (GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, hitResult))
+	{
+		AHexCell* cell = Cast<AHexCell>(hitResult.Actor);
+		if (cell)
+		{
+			TArray<AHexCell*> ignoreCells;
+			ignoreCells.Add(selectedCell);
+			Grid->OnHoverCell(cell, ignoreCells);
+		}
+	}
 }
 
 void AMyController::MoveCharacter(TArray<AHexCell*>& _path)

@@ -211,11 +211,11 @@ void AGridManager::SpawnCharacters()
 // Change cells color
 //Store posible path
 
-void AGridManager::OnHoverCell(AHexCell* cell)
+void AGridManager::OnHoverCell(AHexCell* cell, TArray<AHexCell*> ignoreCells)
 {
 	if (cell != lastCell)
 	{
-		if(lastCell != NULL)lastCell->ResetMaterial();
+		if(lastCell != NULL && ignoreCells.Contains(lastCell) == false)lastCell->ResetMaterial();
 		//Calcular algoritmo
 
 		//AHexCell* playerPos = Cast<ACharacterActor>(); // - - - - - - - - ->Setear variable en otra parte
