@@ -6,6 +6,7 @@
 #include "PlayerEditor/EnumRol.h"
 #include "GameFramework/Character.h"
 #include "DataStructures/ActionsQueue.h"
+#include "Components/TextRenderComponent.h"
 #include "CharacterActor.generated.h"
 
 class AHexCell;
@@ -70,6 +71,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 		UTexture2D* iconTexture;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat")
+		UTextRenderComponent* infoTextRender;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 		TEnumAsByte<Rol> playerRol;
 
@@ -98,6 +102,11 @@ public: UFUNCTION() void RecieveHealing(int32 healAmount);
 public: UFUNCTION() void Block();
 public: UFUNCTION()	void ModifyArmor(int armorVariation);
 private: UFUNCTION() void Die();
+
+public: UFUNCTION() void ShowInfoText(FText newInfoText);
+private: UFUNCTION() void UpdateInfoText(FText newInfoText);
+public: UFUNCTION() void HideInfoText();
+private: UFUNCTION() void ShowDamageRecievedText(int damageRecieved);
 
 public: UFUNCTION() void AddStartingTurnAction(UAtomicAction* startingTurnAction, int turnsLeftToExecuteAction);
 public: UFUNCTION() void AddStartingTurnActionRepeatable(UAtomicAction* startingTurnAction, int numTurnsExecutingAction);
