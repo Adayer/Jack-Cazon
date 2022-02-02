@@ -2,18 +2,26 @@
 #include "Actions/Action.h"
 #include "Cells/HexCell.h"
 #include "Actions/AtomicActions/ModifyArmorAtomicAction.h"
+#include <MyD/Actions/AtomicActions/ShowPlayerInfoTextAtomicAction.h>
+#include <MyD/Actions/AtomicActions/HidePlayerInfoTextAtomicAction.h>
 
 // Sets default values
 ACharacterActor::ACharacterActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	infoTextRender = CreateDefaultSubobject<UTextRenderComponent>("infoTextRender");
+	infoTextRender->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
 void ACharacterActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	infoTextRender->SetTextRenderColor(FColor::Red);
+	HideInfoText();
 	
 	///////// TEMP
 	hp = 10;
@@ -69,7 +77,11 @@ void ACharacterActor::StartTurn_Implementation()
 }
 
 void ACharacterActor::RecieveDamage(int32 damageAmount) {
-	currentHp -= (damageAmount - armor);
+	int damageRecieved = damageAmount - armor;
+
+	ShowDamageRecievedText(damageRecieved);
+
+	currentHp -= damageRecieved;
 	if (currentHp <= 0) {
 		Die();
 		
@@ -77,7 +89,11 @@ void ACharacterActor::RecieveDamage(int32 damageAmount) {
 }
 
 void ACharacterActor::RecieveMagicDamage(int32 damageAmount) {
-	currentHp -= (damageAmount - magicArmor);
+	int damageRecieved = damageAmount - magicArmor;
+	currentHp -= damageRecieved;
+
+	ShowDamageRecievedText(damageRecieved);
+
 	if (currentHp <= 0) {
 		Die();
 	}
@@ -85,6 +101,8 @@ void ACharacterActor::RecieveMagicDamage(int32 damageAmount) {
 
 void ACharacterActor::RecieveDirectDamage(int32 damageAmount)
 {
+	ShowDamageRecievedText(damageAmount);
+
 	currentHp -= damageAmount;
 	if (currentHp <= 0) {
 		Die();
@@ -110,6 +128,30 @@ void ACharacterActor::ModifyArmor(int armorVariation) {
 
 void ACharacterActor::Die() {
 	SetActorHiddenInGame(true);
+}
+
+void ACharacterActor::ShowInfoText(FText newInfoText)
+{
+	UpdateInfoText(newInfoText);
+}
+
+void ACharacterActor::UpdateInfoText(FText newInfoText)
+{
+	infoTextRender->SetText(newInfoText);
+}
+
+void ACharacterActor::HideInfoText()
+{
+	UpdateInfoText(FText::GetEmpty());
+}
+
+void ACharacterActor::ShowDamageRecievedText(int damageRecieved)
+{
+	UShowPlayerInfoTextAtomicAction* showPlayerInfoTextAtomicAction = NewObject<UShowPlayerInfoTextAtomicAction>();
+	showPlayerInfoTextAtomicAction->textToShow = FText::AsNumber(-damageRecieved);
+
+	AddTickAction(showPlayerInfoTextAtomicAction, 0.f);
+	AddTickAction(NewObject<UHidePlayerInfoTextAtomicAction>(), 1.f);
 }
 
 void ACharacterActor::AddStartingTurnAction(UAtomicAction* startingTurnAction, int turnsLeftToExecuteAction)
