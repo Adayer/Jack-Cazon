@@ -43,7 +43,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int numActions;
-
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		int actionsExecuted;
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		int attackRange;
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
@@ -101,6 +102,10 @@ private: UFUNCTION() void Die();
 public: UFUNCTION() void AddStartingTurnAction(UAtomicAction* startingTurnAction, int turnsLeftToExecuteAction);
 public: UFUNCTION() void AddStartingTurnActionRepeatable(UAtomicAction* startingTurnAction, int numTurnsExecutingAction);
 public: UFUNCTION() void AddTickAction(UAtomicAction* tickAction, float secondsToExecuteAction);
+
+public: UFUNCTION() int GetNumActions();
+public: UFUNCTION() int GetActionsExecuted();
+public: UFUNCTION() void IncreaseActionsExecuted();
 
 public: UFUNCTION() int32 GetAttackPower();
 public: UFUNCTION() int32 GetMagicAttackPower();

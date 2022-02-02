@@ -8,10 +8,16 @@
 
 bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	if (actionRecieverCell->GetCharacterInCell() == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("No character in cell selected"));
+		return false;
+	}
+	else if (actionRecieverCell->GetCharacterInCell()->GetTeam() == actionLauncherCharacter->GetTeam()) {
+		UE_LOG(LogTemp, Warning, TEXT("Character selected is a team mate :("));
 		return false;
 	}
 
 	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetAttackRange()) {
+		UE_LOG(LogTemp, Warning, TEXT("attacked character out of attack range"));
 		return false;
 	}
 
@@ -21,4 +27,5 @@ bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, A
 void UAttackAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 
 	actionRecieverCell->GetCharacterInCell()->RecieveDamage(actionLauncherCharacter->GetAttackPower());
+	UE_LOG(LogTemp, Warning, TEXT("Attack action realized"));
 }

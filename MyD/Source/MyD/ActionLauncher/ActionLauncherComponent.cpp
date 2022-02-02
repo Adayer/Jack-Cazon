@@ -3,6 +3,8 @@
 
 #include "ActionLauncherComponent.h"
 #include "../Actions/AttackAction.h"
+#include "../CharacterActor.h"
+#include <MyD/TurnSystem/CombatGameMode.h>
 
 // Sets default values for this component's properties
 UActionLauncherComponent::UActionLauncherComponent()
@@ -40,7 +42,15 @@ void UActionLauncherComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 bool UActionLauncherComponent::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
 {
 	if (myAction != NULL) {
-		myAction->PerformAction(actionLauncherCharacter, actionRecieverCell);
+		if (myAction->PerformAction(actionLauncherCharacter, actionRecieverCell)) {
+			if (actionLauncherCharacter != nullptr && actionLauncherCharacter->GetActionsExecuted() >= actionLauncherCharacter->GetNumActions()) {
+				ACombatGameMode* combatGameMode = Cast<ACombatGameMode>(GetWorld()->GetAuthGameMode());
+				if (combatGameMode != nullptr) {
+					combatGameMode->ContinueCombat();
+				}
+			}
+		}
+		
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("myAction is NULL"));

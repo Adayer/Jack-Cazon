@@ -7,7 +7,12 @@
 #include "AtomicActions/DamageAtomicAction.h"
 
 bool UPoisonAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
-	return actionRecieverCell->GetCharacterInCell() != nullptr;
+	if (actionRecieverCell->GetCharacterInCell() != nullptr && actionRecieverCell->GetCharacterInCell()->GetTeam() != actionLauncherCharacter->GetTeam()) {
+		return true;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("No enemy in selected cell"));
+	return false;
 }
 
 void UPoisonAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
