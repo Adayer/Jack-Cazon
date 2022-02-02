@@ -75,7 +75,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SpawnCharacters();
 
-	void OnHoverCell(AHexCell* Cell);
+	void OnHoverCell(AHexCell* cell, TArray<AHexCell*> ignoreCells = TArray<AHexCell*>());
 	//////////////////////////////////////////////////////////////////////////////
 	void MovePawn();
 	/////////////////////////////////////////////////////////////////////////////
