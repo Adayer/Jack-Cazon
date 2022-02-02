@@ -245,6 +245,7 @@ bool AGridManager::PutCharacterInCell(ACharacterActor* placedCharacter, AHexCell
 		return false;
 	}
 
+	placedCharacter->GetMyCell()->SetCharacterInCell(nullptr);
 	targetCell->SetCharacterInCell(placedCharacter);
 	placedCharacter->SetCharacterCell(targetCell);
 	placedCharacter->SetActorLocation(targetCell->GetActorLocation());
