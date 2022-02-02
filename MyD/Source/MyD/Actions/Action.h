@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "../CharacterActor.h"
-#include "../Cells/HexCell.h"
 #include "Action.generated.h"
+
+class ACharacterActor;
+class AHexCell;
 
 /**
  * 
