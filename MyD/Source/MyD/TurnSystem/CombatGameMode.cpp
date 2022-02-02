@@ -117,19 +117,21 @@ void ACombatGameMode::StartTurn()
 		}
 	}
 }
-
-void ACombatGameMode::EndTurn()
+void ACombatGameMode::CharacterHasDied()
 {
 	for (int32 i = (turnOrderDataList.Num() - 1); i >= 0; --i)
 	{
 		ACharacterActor* charToCheck = turnOrderDataList[i]->GetCharacterBP();
 		if (charToCheck->GetCurrentHP() <= 0)
 		{
+			if (combatInitiativeWidget)
+			{
+				combatInitiativeWidget->RemoveDeadChar((i - turnIndex + turnOrderDataList.Num()) % turnOrderDataList.Num());
+			}
 			turnOrderDataList[i]->GetCharacterBP()->Destroy();
 			turnOrderDataList.RemoveAt(i);
 		}
 	}
-
 	int numAliveA = 0;
 	int numAliveB = 0;
 	for (int32 i = 0; i < turnOrderDataList.Num(); ++i)
@@ -143,17 +145,14 @@ void ACombatGameMode::EndTurn()
 			++numAliveB;
 		}
 	}
-
 	if (numAliveA == 0 || numAliveB == 0)
 	{
 		UGameplayStatics::OpenLevel(GetWorld(), "CharacterEditMap");
 	}
-	
-	ToggleInitiativeUI();
-	ToggleInitiativeUI();
+}
 
-	//EndCombat();
-	
+void ACombatGameMode::EndTurn()
+{
 	++turnIndex;
 	if(turnIndex >= turnOrderDataList.Num())
 	{ 

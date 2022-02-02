@@ -21,4 +21,6 @@ public:
 		void NextTurn();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Combat")
 		void InitUI();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Combat")
+		void RemoveDeadChar(int index);
 };
