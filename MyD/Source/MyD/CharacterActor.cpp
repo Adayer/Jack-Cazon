@@ -6,6 +6,7 @@
 #include <MyD/Actions/AtomicActions/HidePlayerInfoTextAtomicAction.h>
 #include "TurnSystem/CombatGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include <MyD/Actions/AtomicActions/RemoveStunAtomicAction.h>
 
 // Sets default values
 ACharacterActor::ACharacterActor()
@@ -76,6 +77,12 @@ void ACharacterActor::StartTurn_Implementation()
 	UE_LOG(LogTemp, Warning, TEXT("Start turn"));
 
 	actionsExecuted = 0;
+
+	if (stunned) {
+		actionsExecuted = numActions;
+
+		ShowTextInInfoText(FText::FromString(FString("Stunned")));
+	}
 }
 
 void ACharacterActor::RecieveDamage(int32 damageAmount) {
@@ -112,7 +119,10 @@ void ACharacterActor::RecieveDirectDamage(int32 damageAmount)
 }
 
 void ACharacterActor::RecieveHealing(int32 healAmount) {
+	int previousCurrentHP = currentHp;
 	currentHp = FMath::Min<int32>(hp, currentHp + healAmount);
+
+	ShowHealingRecievedText(currentHp - previousCurrentHP);
 }
 
 void ACharacterActor::Block() {
@@ -122,13 +132,38 @@ void ACharacterActor::Block() {
 	UModifyArmorAtomicAction* armorReduction = NewObject<UModifyArmorAtomicAction>();
 	armorReduction->armorVariation = -armorUpgrade;
 	AddStartingTurnAction(armorReduction, 1);
+
+	ShowTextInInfoText(FText::FromString(FString("Block")));
 }
 
 void ACharacterActor::ModifyArmor(int armorVariation) {
 	armor += armorVariation;
 }
 
+void ACharacterActor::Modifyattack(int attackVariation)
+{
+	damage += attackVariation;
+}
+
+void ACharacterActor::GetStunned(int numberOfTurnsStuned)
+{
+	stunned = true;
+
+	URemoveStunAtomicAction* removeStunAtomicAction = NewObject<URemoveStunAtomicAction>();
+	AddStartingTurnAction(removeStunAtomicAction, numberOfTurnsStuned);
+
+	ShowTextInInfoText(FText::FromString(FString("Stunned: ").Append(FString::FromInt(numberOfTurnsStuned))));
+}
+
+void ACharacterActor::RemoveStun()
+{
+	stunned = false;
+}
+
 void ACharacterActor::Die() {
+	startTurnActions->Empty();
+	tickActions->Empty();
+
 	myCell->SetCharacterInCell(nullptr);
 	SetActorHiddenInGame(true);
 	ACombatGameMode* CombatGM = Cast<ACombatGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -150,13 +185,25 @@ void ACharacterActor::HideInfoText()
 	UpdateInfoText(FText::GetEmpty());
 }
 
-void ACharacterActor::ShowDamageRecievedText(int damageRecieved)
+void ACharacterActor::ShowTextInInfoText(FText newInfoText, FColor textColor)
 {
+	infoTextRender->TextRenderColor = textColor;
+
 	UShowPlayerInfoTextAtomicAction* showPlayerInfoTextAtomicAction = NewObject<UShowPlayerInfoTextAtomicAction>();
-	showPlayerInfoTextAtomicAction->textToShow = FText::AsNumber(-damageRecieved);
+	showPlayerInfoTextAtomicAction->textToShow = newInfoText;
 
 	AddTickAction(showPlayerInfoTextAtomicAction, 0.f);
 	AddTickAction(NewObject<UHidePlayerInfoTextAtomicAction>(), 1.f);
+}
+
+void ACharacterActor::ShowDamageRecievedText(int damageRecieved)
+{
+	ShowTextInInfoText(FText::FromString(FString("-").Append(FString::FromInt(damageRecieved))));
+}
+
+void ACharacterActor::ShowHealingRecievedText(int healingRecieved)
+{
+	ShowTextInInfoText(FText::FromString(FString("+").Append(FString::FromInt(healingRecieved))));
 }
 
 void ACharacterActor::AddStartingTurnAction(UAtomicAction* startingTurnAction, int turnsLeftToExecuteAction)

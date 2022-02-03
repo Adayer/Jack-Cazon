@@ -1,12 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AttackAction.h"
+#include "StunBasicAttackAction.h"
+
 #include "../CharacterActor.h"
 #include "../Cells/HexCell.h"
+#include <MyD/Actions/AtomicActions/PhysicDamageAtomicAction.h>
 
-
-bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
+bool UStunBasicAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	if (actionRecieverCell->GetCharacterInCell() == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("No character in cell selected"));
 		return false;
@@ -19,13 +20,19 @@ bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, A
 	return true;
 }
 
-void UAttackAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
+void UStunBasicAttackAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 
-	actionRecieverCell->GetCharacterInCell()->RecieveDamage(actionLauncherCharacter->GetAttackPower());
+	actionRecieverCell->GetCharacterInCell()->GetStunned(2);
+
+	UPhysicDamageAtomicAction* physicDamageAtomicAction = NewObject<UPhysicDamageAtomicAction>();;
+	physicDamageAtomicAction->recievedDamage = actionLauncherCharacter->GetAttackPower();
+
+	actionRecieverCell->GetCharacterInCell()->AddTickAction(physicDamageAtomicAction, 1.f);
+
 	UE_LOG(LogTemp, Warning, TEXT("Attack action realized"));
 }
 
-bool UAttackAction::IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
+bool UStunBasicAttackAction::IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
 {
 	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetAttackRange()) {
 		UE_LOG(LogTemp, Warning, TEXT("attacked character out of attack range"));
