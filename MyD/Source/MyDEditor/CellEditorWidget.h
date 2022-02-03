@@ -9,10 +9,7 @@
 #include "CellEditorWidget.generated.h"
 
 
-/**
- * 
- */
-class AHexCell;
+//class AHexCell;
 
 UCLASS()
 class MYDEDITOR_API UCellEditorWidget : public UEditorUtilityWidget

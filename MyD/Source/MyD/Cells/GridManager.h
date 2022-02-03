@@ -22,7 +22,6 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		UMaterial* aTeamMat;
-
 	UPROPERTY(EditAnywhere)
 		UMaterial* bTeamMat;
 
@@ -60,10 +59,6 @@ public:
 		void SpawnCharacters();
 
 	void OnHoverCell(AHexCell* cell, TArray<AHexCell*> ignoreCells = TArray<AHexCell*>());
-	//////////////////////////////////////////////////////////////////////////////
-	void MovePawn();
-	/////////////////////////////////////////////////////////////////////////////
-
 	bool PutCharacterInCell(ACharacterActor* placedCharacter, AHexCell* targetCell);
 
 private:

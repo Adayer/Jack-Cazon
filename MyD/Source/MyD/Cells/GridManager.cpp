@@ -44,14 +44,8 @@ void AGridManager::SpawnCharacters()
 	for (auto sp : AllSpawnPoints)
 	{
 		ASpawnPoint* spawnPoint = Cast<ASpawnPoint>(sp);
-
 		ACharacterActor* newChar = GetWorld()->SpawnActor<ACharacterActor>(CharacterBPClass);
-
-		newChar->SetCharacterCell(spawnPoint->cellOwner);
-		if (spawnPoint->cellOwner != NULL)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Neighbour num: %d"), spawnPoint->cellOwner->neighbours.Num());
-		}		
+		newChar->SetCharacterCell(spawnPoint->cellOwner);	
 
 		PutCharacterInCell(newChar, spawnPoint->cellOwner);
 
@@ -94,15 +88,9 @@ void AGridManager::SpawnCharacters()
 				break;
 			}
 		}
-
 	}
-
 }
 
-//Metodo comprobar walkable
-// Store reference (and check) of Cell parameter
-// Change cells color
-//Store posible path
 
 void AGridManager::OnHoverCell(AHexCell* cell, TArray<AHexCell*> ignoreCells)
 {
@@ -122,14 +110,14 @@ void AGridManager::OnHoverCell(AHexCell* cell, TArray<AHexCell*> ignoreCells)
 
 /// /////////////////////////////////////////////////////////////////////////
 
-void AGridManager::MovePawn()
-{
-	if (controller)
-	{
-		controller->MoveCharacter(path);
-	}
-	
-}
+//void AGridManager::MovePawn()
+//{
+//	if (controller)
+//	{
+//		controller->MoveCharacter(path);
+//	}
+//	
+//}
 bool AGridManager::PutCharacterInCell(ACharacterActor* placedCharacter, AHexCell* targetCell)
 {
 	if (targetCell == nullptr || targetCell->GetCharacterInCell() != nullptr || placedCharacter == nullptr) {
@@ -175,7 +163,7 @@ bool AGridManager::AStar(AHexCell* start, AHexCell* end, float maxSteps)
 
 		while (toCheckList.Num())
 		{
-			toCheckList.Sort([](AHexCell& a, AHexCell& b) {	return a.globalGoal > b.globalGoal; }); //Comprobar que esto esta bien
+			toCheckList.Sort([](AHexCell& a, AHexCell& b) {	return a.globalGoal > b.globalGoal; });
 
 			while (toCheckList.Num() && toCheckList.Last()->visited)
 			{
@@ -189,7 +177,7 @@ bool AGridManager::AStar(AHexCell* start, AHexCell* end, float maxSteps)
 			// Check neighbour cells
 			for (AHexCell* neighbour : currentCell->neighbours)
 			{
-				if (neighbour->characterInCell == NULL) //---------------------> CAMBIAR POR CHARACTER IN CELL
+				if (neighbour->characterInCell == NULL) 
 				{
 					int potentialLocalGoal = currentCell->localGoal + neighbour->weight; //Suma el peso de la casilla al local del anterior
 

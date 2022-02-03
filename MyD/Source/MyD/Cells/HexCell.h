@@ -15,7 +15,6 @@ enum class ECellType : uint8
 	Water,
 	Sand,
 	Obstacle
-
 };
 
 class UStaticMeshComponent;
@@ -42,7 +41,6 @@ public:
 
 	AHexCell* parent = NULL;
 	bool visited = false;
-	//bool free = true;
 
 	UPROPERTY(EditAnywhere)
 	TArray<AHexCell*> neighbours;
@@ -70,8 +68,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 		UMaterial* invalidMat;
 
-	///Too ADD
-
 	
 public:	
 	// Sets default values for this actor's properties
@@ -81,9 +77,11 @@ public:
 	void ResetMaterial();
 	void ResetAStartProperties();
 
-public: UFUNCTION() ACharacterActor* GetCharacterInCell();
-public: UFUNCTION() void SetCharacterInCell(ACharacterActor* newCharacterInCell);
+	UFUNCTION() 
+		ACharacterActor* GetCharacterInCell();
+	UFUNCTION() 
+		void SetCharacterInCell(ACharacterActor* newCharacterInCell);
 
-public: int DistanceToCell(AHexCell* otherCell);
+	int DistanceToCell(AHexCell* otherCell);
 
 };
