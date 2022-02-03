@@ -220,5 +220,12 @@ public: UFUNCTION(BlueprintCallable) void SetMagicDamage(int _magicDamage) {
 public: UFUNCTION(BlueprintCallable) void SetIconTexture(UTexture2D* _icon) { iconTexture = _icon; };
 public: UFUNCTION(BlueprintCallable) void SetRol(TEnumAsByte<Rol> _rol) { playerRol = _rol; };
 public: UFUNCTION(BlueprintCallable) void SetActions(TSubclassOf<UAction> _actions) { playerActions = _actions; };
+public:UFUNCTION(BlueprintCallable) void SetStats(int _hp, int _armor, int _damage, int _magicArmor, int _magicDamage) {
+	hp = _hp;
+	armor = _armor;
+	damage = _damage;
+	magicArmor = _magicArmor;
+	magicDamage = _magicDamage;
+};
 
 };

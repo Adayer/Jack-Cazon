@@ -10,6 +10,7 @@ void ACombatGameMode::BeginPlay()
 	TArray<AActor*> GridManagers;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridManager::StaticClass(), GridManagers);
 
+
 	Cast<AGridManager>(GridManagers[0])->SpawnCharacters();
 
 	StartCombat();
