@@ -26,94 +26,13 @@ AGridManager::AGridManager()
 	MagueTextureObject = MagueTexture.Object;
 }
 
-//void AGridManager::SpawnCells()
-//{
-//	gridArray.SetNumZeroed(gridWidth);
-//	for (int x = 0; x < gridWidth; x++)
-//	{
-//		gridArray[x].SetNumZeroed(gridHeight);
-//
-//		for (int y = 0; y < gridHeight; y++)
-//		{
-//			int oddRow = y % 2;
-//			const float xPos = x * XOffset + OddOffset * oddRow;
-//			const float yPos = y * YOffset;
-//
-//			AHexCell* newCell = GetWorld()->SpawnActor<AHexCell>(BaseCell, FVector(FIntPoint(xPos, yPos)), FRotator::ZeroRotator);
-//
-//			int q = x - (y - y % 2) / 2;
-//			newCell->hexCoord = FIntPoint(q, y);
-//			gridArray[x][y] = newCell;
-//		}
-//	}
-//
-//	//////////////////////////////////////////////////////////////////////////////
-//	//APawn* pawn = GetWorld()->SpawnActor<APawn>(testPawn, gridArray[0][0]->GetActorLocation(), FRotator::ZeroRotator);
-//	controller = Cast<AMyController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-//	//////////////////////////////////////////////////////////////////////////////
-//
-//	// Set neighbours
-//	for (int x = 0; x < gridWidth; x++)
-//	{
-//		for (int y = 0; y < gridHeight; y++)
-//		{
-//			bool oddRow = y % 2==1;
-//			if (y>0)
-//			{
-//				gridArray[x][y]->neighbours.Add(gridArray[x][y-1]);
-//
-//				if (oddRow)
-//				{
-//					if (x < gridWidth - 1)
-//					gridArray[x][y]->neighbours.Add(gridArray[x+1][y-1]);
-//				}
-//				else
-//				{
-//					if (x > 0)
-//					gridArray[x][y]->neighbours.Add(gridArray[x-1][y-1]);
-//				}
-//			}
-//
-//			if (y < gridHeight - 1)
-//			{
-//				gridArray[x][y]->neighbours.Add(gridArray[x][y+1]);
-//
-//				if (oddRow)
-//				{
-//					if(x < gridWidth - 1)
-//					gridArray[x][y]->neighbours.Add(gridArray[x+1][y+1]);
-//				}
-//				else
-//				{
-//					if(x > 0)
-//					gridArray[x][y]->neighbours.Add(gridArray[x-1][y+1]);
-//				}
-//			}
-//
-//			if (x>0)
-//			{
-//				gridArray[x][y]->neighbours.Add(gridArray[x-1][y]);
-//			}
-//
-//			if (x < gridWidth - 1)
-//			{
-//				gridArray[x][y]->neighbours.Add(gridArray[x+1][y]);
-//			}
-//		}
-//	}
-//
-//}
+
 
 
 // Called when the game starts or when spawned
 void AGridManager::BeginPlay()
 {
 	Super::BeginPlay();
-
-
-	//SpawnCells();
-	//SpawnCharacters();
-
 }
 
 void AGridManager::SpawnCharacters()
@@ -178,32 +97,6 @@ void AGridManager::SpawnCharacters()
 
 	}
 
-//	unsigned int numChars = Cast<ACombatGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->NUM_PLAYERS;
-//	for (unsigned int i = 0; i < numChars; ++i)
-//	{
-//		int32 randValueX;
-//		int32 randValueY;
-//		do
-//		{
-//			randValueX = FMath::RandRange(0, gridWidth - 1);
-//			randValueY = FMath::RandRange(0, gridHeight - 1);
-//		} while (gridArray[randValueX][randValueY]->GetCharacterInCell());
-//
-//		const FVector SpawnLocation = gridArray[randValueX][randValueY]->GetActorLocation();
-//		ACharacterActor* newChar = GetWorld()->SpawnActor<ACharacterActor>(CharacterBPClass);
-//		newChar->myCell = gridArray[randValueX][randValueY];
-//		gridArray[randValueX][randValueY]->SetCharacterInCell(newChar);
-//		newChar->SetActorLocation(SpawnLocation);
-//
-//		if (i % 2 == 0)
-//		{
-//			newChar->SetIconTexture(OrcTextureObject);//TextureFinder.Object;
-//		}
-//		else
-//		{
-//			newChar->SetIconTexture(HumanTextureObject);//TextureFinder.Object;
-//		}
-//	}
 }
 
 //Metodo comprobar walkable
@@ -216,9 +109,7 @@ void AGridManager::OnHoverCell(AHexCell* cell, TArray<AHexCell*> ignoreCells)
 	if (cell != lastCell)
 	{
 		if(lastCell != NULL && ignoreCells.Contains(lastCell) == false)lastCell->ResetMaterial();
-		//Calcular algoritmo
 
-		//AHexCell* playerPos = Cast<ACharacterActor>(); // - - - - - - - - ->Setear variable en otra parte
 		ACombatGameMode* CombatGM = Cast<ACombatGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 		TArray<UTurnOrderData*>* turnData = CombatGM->GetTurnOrderDataList();
 		ACharacterActor* playerChar = (*turnData)[CombatGM->GetTurnIndex()]->GetCharacter();
@@ -271,21 +162,8 @@ bool AGridManager::AStar(AHexCell* start, AHexCell* end, float maxSteps)
 {
 	path.Empty();
 
-	if (Heuristic(start, end)< maxSteps)
+	if (Heuristic(start, end)< maxSteps && end->characterInCell == NULL)
 	{
-		//Resetear todas las celdas
-		//Hacer un delegado y que las celdas se subscriban en begin play?
-
-
-		//for (int x = 0; x < gridWidth; x++)
-		//{
-		//	for (int y = 0; y < gridHeight; y++)
-		//	{
-		//		gridArray[x][y]->ResetAStartProperties();
-		//	}
-		//}
-
-
 		AHexCell* currentCell = start;
 		start->localGoal = 0;
 		start->globalGoal = Heuristic(start, end);
@@ -311,7 +189,7 @@ bool AGridManager::AStar(AHexCell* start, AHexCell* end, float maxSteps)
 			// Check neighbour cells
 			for (AHexCell* neighbour : currentCell->neighbours)
 			{
-				if (neighbour->free)
+				if (neighbour->characterInCell == NULL) //---------------------> CAMBIAR POR CHARACTER IN CELL
 				{
 					int potentialLocalGoal = currentCell->localGoal + neighbour->weight; //Suma el peso de la casilla al local del anterior
 
