@@ -8,6 +8,8 @@
 
 #include "../CharacterActor.h"
 #include "../SpawnPoint.h"
+#include "../SavedPlayerData.h"
+#include "../MainGameInstance.h"
 
 
 // Sets default values
@@ -39,11 +41,14 @@ void AGridManager::SpawnCharacters()
 {
 	TArray<AActor*> AllSpawnPoints;
 	UGameplayStatics::GetAllActorsOfClass(this, ASpawnPoint::StaticClass(), AllSpawnPoints);
-	
+	UMainGameInstance* GI = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	int index = 0;
 
 	for (auto sp : AllSpawnPoints)
 	{
 		ASpawnPoint* spawnPoint = Cast<ASpawnPoint>(sp);
+		
+		TArray<USavedPlayerData*> playersData = GI->playersData;
 
 		ACharacterActor* newChar = GetWorld()->SpawnActor<ACharacterActor>(CharacterBPClass);
 
@@ -68,6 +73,8 @@ void AGridManager::SpawnCharacters()
 			MeshComponent->SetMaterial(0, bTeamMat);
 		}
 
+		newChar->SetStats(GI->playersData[index]->GetHP(), GI->playersData[index]->GetArmor(), GI->playersData[index]->GetDamage(), GI->playersData[index]->GetMagicArmor(), GI->playersData[index]->GetMagicDamage());
+
 		switch (newChar->GetRol())
 		{
 		case Rol::Archer:
@@ -75,7 +82,7 @@ void AGridManager::SpawnCharacters()
 			
 			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
 			MeshComponent->SetStaticMesh(archerMesh);
-			newChar->SetIconTexture(ArcherTextureObject);
+			newChar->SetIconTexture(GI->playersData[index]->iconTexture);
 
 				break;
 			}
@@ -83,18 +90,19 @@ void AGridManager::SpawnCharacters()
 			{
 			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
 			MeshComponent->SetStaticMesh(tankMesh);
-			newChar->SetIconTexture(TankTextureObject);
+			newChar->SetIconTexture(GI->playersData[index]->iconTexture);
 				break;
 			}
 		case Rol::Mague:
 			{
 			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
 			MeshComponent->SetStaticMesh(magueMesh);
-			newChar->SetIconTexture(MagueTextureObject);
+			newChar->SetIconTexture(GI->playersData[index]->iconTexture);
 				break;
 			}
 		}
 
+		index++;
 	}
 
 }
