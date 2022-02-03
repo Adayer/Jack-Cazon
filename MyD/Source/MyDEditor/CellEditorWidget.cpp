@@ -154,7 +154,8 @@ void UCellEditorWidget::ChangeCellType(ECellType type)
 			switch (type)
 			{
 				CASE_TYPE_WEIGHT_MAT(ECellType::Base, 1, defaultMat);
-				CASE_TYPE_WEIGHT_MAT(ECellType::Water, 2, waterMat);
+				CASE_TYPE_WEIGHT_MAT(ECellType::Sand, 2, sandMat);
+				CASE_TYPE_WEIGHT_MAT(ECellType::Water, 3, waterMat);
 				CASE_TYPE_WEIGHT_MAT(ECellType::Obstacle, 99, obstacleMat);
 			}
 
