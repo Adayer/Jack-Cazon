@@ -50,6 +50,8 @@ private:
 		int attackRange;
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		bool team;
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		bool stunned = false;
 
 
 public:
@@ -101,12 +103,17 @@ public: UFUNCTION() void RecieveDirectDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveHealing(int32 healAmount);
 public: UFUNCTION() void Block();
 public: UFUNCTION()	void ModifyArmor(int armorVariation);
+public: UFUNCTION()	void Modifyattack(int attackVariation);
+public: UFUNCTION() void GetStunned(int numberOfTurnsStuned);
+public: UFUNCTION() void RemoveStun();
 private: UFUNCTION() void Die();
 
 public: UFUNCTION() void ShowInfoText(FText newInfoText);
 private: UFUNCTION() void UpdateInfoText(FText newInfoText);
 public: UFUNCTION() void HideInfoText();
+public: UFUNCTION() void ShowTextInInfoText(FText newInfoText, FColor textColor = FColor::Green);
 private: UFUNCTION() void ShowDamageRecievedText(int damageRecieved);
+private: UFUNCTION() void ShowHealingRecievedText(int healingRecieved);
 
 public: UFUNCTION() void AddStartingTurnAction(UAtomicAction* startingTurnAction, int turnsLeftToExecuteAction);
 public: UFUNCTION() void AddStartingTurnActionRepeatable(UAtomicAction* startingTurnAction, int numTurnsExecutingAction);

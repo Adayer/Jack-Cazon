@@ -24,4 +24,5 @@ public: UActionsQueue();
 public: void Push(UAtomicAction* queuedAction, float unitTime);
 public: TArray<UAtomicAction*> Pop();
 public: void UpdateTimeUnits(float timeUnitsElapsed);
+public: void Empty();
 };
