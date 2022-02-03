@@ -25,3 +25,22 @@ void UFireExplosionAction::ExecuteAction(ACharacterActor* actionLauncherCharacte
 
 	UE_LOG(LogTemp, Warning, TEXT("Fire attack action executed"));
 }
+
+TArray<AHexCell*> UFireExplosionAction::GetAffectedCells(AHexCell* actionRecieverCell) {
+	TArray<AHexCell*> returnedCells;
+
+	returnedCells.Add(actionRecieverCell);
+	returnedCells.Append(actionRecieverCell->neighbours);
+
+	return returnedCells;
+}
+
+bool UFireExplosionAction::IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
+{
+	
+	if (actionRecieverCell->GetCharacterInCell() != nullptr) {
+		return actionLauncherCharacter->GetTeam() != actionRecieverCell->GetCharacterInCell()->GetTeam();
+	}
+
+	return true;
+}

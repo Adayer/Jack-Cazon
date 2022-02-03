@@ -5,10 +5,16 @@
 #include "Cells/GridManager.h"
 #include "CharacterActor.h"
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
+#include <MyD/Actions/AtomicActions/ResetCellColorAtomicAction.h>
+#include <MyD/Actions/AtomicActions/PaintCellAtomicAction.h>
 
 AMyController::AMyController()
 {
 	SetActorTickEnabled(true);
+
+	actionLauncher = CreateDefaultSubobject<AActionLauncherActor>("actionLauncher");
+
+	affectedCells = TArray<AHexCell*>();
 }
 
 void AMyController::BeginPlay()
@@ -26,59 +32,33 @@ void AMyController::BeginPlay()
 
 void AMyController::Tick(float DeltaTime)
 {
-	/*
-	* if (Walking)
-	{
-		if (path.Num())
-		{
-			if (cooldown <= 0)
-			{
-				currentCell = path.Pop();
-				GetPawn()->SetActorLocation(currentCell->GetActorLocation());
-				cooldown = 0.5f;
-			}
-			else
-			{
-				cooldown -= DeltaTime;
-			}
-		}
-		else
-		{
-			Grid->PutCharacterInCell(Cast<ACharacterActor>(GetPawn()), currentCell);
-			Walking = false;
-		}
-	}
-	else 
-	{
+
+	ResetSelectedCells();
+
+	if (preparingAction) {
 		FHitResult hitResult;
 		if (GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, hitResult))
 		{
 			AHexCell* cell = Cast<AHexCell>(hitResult.Actor);
-			selectedCell = cell;
 			if (cell)
 			{
-				Grid->OnHoverCell(cell);
-
-				if (WasInputKeyJustPressed(EKeys::LeftMouseButton))
-				{
-					Grid->MovePawn();
+				selectedCell = cell;
+				actionLauncher->SetActionRecieverCell(cell);
+				affectedCells = actionLauncher->GetActionAffectedCells();
+				for (AHexCell* affectedCell : affectedCells) {
+					if (actionLauncher->GetActionLauncherComponent()->GetMyAction()->IsActionInRangeOfExecution(actionLauncher->GetActionLauncherCharacter(), affectedCell)) {
+						affectedCell->ChangeMaterial(true);
+					}
+					else {
+						affectedCell->ChangeMaterial(false);
+					}
+					
 				}
+				
 			}
 		}
 	}
-	*/
 	
-	FHitResult hitResult;
-	if (GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, hitResult))
-	{
-		AHexCell* cell = Cast<AHexCell>(hitResult.Actor);
-		if (cell)
-		{
-			TArray<AHexCell*> ignoreCells;
-			ignoreCells.Add(selectedCell);
-			Grid->OnHoverCell(cell, ignoreCells);
-		}
-	}
 }
 
 void AMyController::MoveCharacter(TArray<AHexCell*>& _path)
@@ -91,13 +71,13 @@ void AMyController::MoveCharacter(TArray<AHexCell*>& _path)
 	Walking = true;
 }
 
-void AMyController::ResetSelectedCell()
+void AMyController::ResetSelectedCells()
 {
-	if (selectedCell != nullptr) {
-		selectedCell->ResetMaterial();
+	for (AHexCell* affectedCell : affectedCells) {
+		affectedCell->ResetMaterial();
 	}
 
-	selectedCell = nullptr;
+	affectedCells.Empty();
 }
 
 void AMyController::SetupInputComponent()
@@ -111,21 +91,25 @@ void AMyController::SetupInputComponent()
 
 void AMyController::OnLeftMouseButtonPressed() {
 
-	ResetSelectedCell();
+	ResetSelectedCells();
 
-	FHitResult hitResult;
-	if (GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, hitResult))
-	{
-		AHexCell* cell = Cast<AHexCell>(hitResult.Actor);
-		if (cell != nullptr) {
-			selectedCell = cell;
-			selectedCell->ChangeMaterial(true);
-		}
-		
-	}
+	preparingAction = !actionLauncher->ExecuteAction();
+
+}
+
+TArray<AHexCell*> AMyController::GetAffectedCells()
+{
+	return affectedCells;
 }
 
 AHexCell* AMyController::GetSelectedCell()
 {
 	return selectedCell;
+}
+
+void AMyController::PrepareAction(UAction* actionToExecute, ACharacterActor* actionLauncherCharacter)
+{
+	preparingAction = true;
+	actionLauncher->SetActionLaunchersAction(actionToExecute);
+	actionLauncher->SetActionLauncherCharacter(actionLauncherCharacter);
 }
