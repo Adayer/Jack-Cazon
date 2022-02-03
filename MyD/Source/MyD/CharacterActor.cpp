@@ -4,6 +4,8 @@
 #include "Actions/AtomicActions/ModifyArmorAtomicAction.h"
 #include <MyD/Actions/AtomicActions/ShowPlayerInfoTextAtomicAction.h>
 #include <MyD/Actions/AtomicActions/HidePlayerInfoTextAtomicAction.h>
+#include "TurnSystem/CombatGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ACharacterActor::ACharacterActor()
@@ -127,7 +129,10 @@ void ACharacterActor::ModifyArmor(int armorVariation) {
 }
 
 void ACharacterActor::Die() {
+	myCell->SetCharacterInCell(nullptr);
 	SetActorHiddenInGame(true);
+	ACombatGameMode* CombatGM = Cast<ACombatGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	CombatGM->CharacterHasDied();
 }
 
 void ACharacterActor::ShowInfoText(FText newInfoText)

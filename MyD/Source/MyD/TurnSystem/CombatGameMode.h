@@ -63,6 +63,8 @@ public:
 		void StartCombat(); //Called to StartCombat
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 		void ContinueCombat(); //Called to move to the next phase of combat
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+		void CharacterHasDied();
 
 	TArray<UTurnOrderData*>* GetTurnOrderDataList() { return &turnOrderDataList; }
 	int GetTurnIndex() { return turnIndex; }
