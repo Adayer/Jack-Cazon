@@ -17,7 +17,7 @@ class MYD_API UMainGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<USavedPlayerData*> playersData;
 
 		UMainGameInstance();

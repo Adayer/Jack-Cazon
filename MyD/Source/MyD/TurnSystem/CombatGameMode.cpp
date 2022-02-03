@@ -10,10 +10,20 @@ void ACombatGameMode::BeginPlay()
 	TArray<AActor*> GridManagers;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridManager::StaticClass(), GridManagers);
 
+	if (GridManagers.Num() > 0) {
+		AGridManager* gridManager = Cast<AGridManager>(GridManagers[0]);
+		if (gridManager) {
+			gridManager->SpawnCharacters();
 
-	Cast<AGridManager>(GridManagers[0])->SpawnCharacters();
+			StartCombat();
+		}
+	}
+	else {
+		
+	}
+	
 
-	StartCombat();
+	
 }
 
 void ACombatGameMode::StartCombat()
@@ -185,6 +195,8 @@ void ACombatGameMode::ToggleInitiativeUI()
 		combatInitiativeWidget->InitUI();
 		combatInitiativeWidget->AddToViewport();
 	}
+
+	InitializeActionsWidget();
 }
 
 void ACombatGameMode::UpdateInitiativeUI()
@@ -198,4 +210,8 @@ void ACombatGameMode::UpdateInitiativeUI()
 ACharacterActor* ACombatGameMode::GetCharacterWithTurn()
 {
 	return turnOrderDataList[turnIndex]->GetCharacter();
+}
+
+void ACombatGameMode::InitializeActionsWidget_Implementation() {
+
 }

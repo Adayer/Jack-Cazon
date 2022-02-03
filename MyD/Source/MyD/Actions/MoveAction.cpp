@@ -26,7 +26,9 @@ void UMoveAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCe
 
 	if (FoundActors.Num() != 0) {
 		AGridManager* gridManager = Cast<AGridManager>(FoundActors[0]);
-		TArray<AHexCell*> path = *gridManager->GetAStarPath(actionLauncherCharacter->GetMyCell(), actionRecieverCell, actionLauncherCharacter->GetMovementRange());
+		bool cellInRange = false;
+
+		TArray<AHexCell*> path = *gridManager->GetAStarPath(actionLauncherCharacter->GetMyCell(), actionRecieverCell, actionLauncherCharacter->GetMovementRange(), cellInRange);
 
 		UPaintCellAtomicAction* paintCellColorAtomicAction = NewObject<UPaintCellAtomicAction>();
 		paintCellColorAtomicAction->paintedCell = actionRecieverCell;
@@ -56,10 +58,15 @@ void UMoveAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCe
 
 bool UMoveAction::IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
 {
-	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetMovementRange()) {
-		UE_LOG(LogTemp, Warning, TEXT("Cell out of moving range"));
-		return false;
+	bool cellInRange = false;
+
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridManager::StaticClass(), FoundActors);
+
+	if (FoundActors.Num() != 0) {
+		AGridManager* gridManager = Cast<AGridManager>(FoundActors[0]);
+		TArray<AHexCell*> path = *gridManager->GetAStarPath(actionLauncherCharacter->GetMyCell(), actionRecieverCell, actionLauncherCharacter->GetMovementRange(), cellInRange);
 	}
 
-	return true;
+	return cellInRange;
 }

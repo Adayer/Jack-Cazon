@@ -60,9 +60,6 @@ public:
 		void SpawnCharacters();
 
 	void OnHoverCell(AHexCell* cell, TArray<AHexCell*> ignoreCells = TArray<AHexCell*>());
-	//////////////////////////////////////////////////////////////////////////////
-	void MovePawn();
-	/////////////////////////////////////////////////////////////////////////////
 
 	bool PutCharacterInCell(ACharacterActor* placedCharacter, AHexCell* targetCell);
 
@@ -70,7 +67,7 @@ private:
 	TArray<AHexCell*> path;
 	bool AStar(AHexCell* start, AHexCell* end, float maxSteps);
 
-public: TArray<AHexCell*>* GetAStarPath(AHexCell* start, AHexCell* end, float maxSteps);
+public: TArray<AHexCell*>* GetAStarPath(AHexCell* start, AHexCell* end, float maxSteps, bool& hasPath);
 
 protected:
 	// Called when the game starts or when spawned
