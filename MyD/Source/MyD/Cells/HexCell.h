@@ -53,7 +53,7 @@ public:
 	/////////////////////////////////////////
 
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UMaterial* defaultMat;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
