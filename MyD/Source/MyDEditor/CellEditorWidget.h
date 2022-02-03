@@ -37,7 +37,13 @@ public:
 		void CreateSpawnPoint(bool team);
 
 	UFUNCTION(BlueprintCallable)
-	void ChangeCellType(ECellType type); //El enum esta definido?
+		void RemoveCell();
+
+	UFUNCTION(BlueprintCallable)
+		void Reset();
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeCellType(ECellType type); 
 
 	//		M A T E R I A L S
 	UPROPERTY(EditAnywhere)
@@ -45,6 +51,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		UMaterial* waterMat;
+
+	UPROPERTY(EditAnywhere)
+		UMaterial* sandMat;
 
 	UPROPERTY(EditAnywhere)
 		UMaterial* obstacleMat;

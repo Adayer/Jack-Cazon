@@ -116,20 +116,51 @@ void ACombatGameMode::StartTurn()
 			turnIndex = 0;
 		}
 	}
-	
+}
+void ACombatGameMode::CharacterHasDied()
+{
+	for (int32 i = (turnOrderDataList.Num() - 1); i >= 0; --i)
+	{
+		ACharacterActor* charToCheck = turnOrderDataList[i]->GetCharacterBP();
+		if (charToCheck->GetCurrentHP() <= 0)
+		{
+			if (combatInitiativeWidget)
+			{
+				combatInitiativeWidget->RemoveDeadChar((i - turnIndex + turnOrderDataList.Num()) % turnOrderDataList.Num());
+			}
+			turnOrderDataList[i]->GetCharacterBP()->Destroy();
+			turnOrderDataList.RemoveAt(i);
+		}
+	}
+	int numAliveA = 0;
+	int numAliveB = 0;
+	for (int32 i = 0; i < turnOrderDataList.Num(); ++i)
+	{
+		if (turnOrderDataList[i]->GetCharacterBP()->GetTeam())
+		{
+			++numAliveA;
+		}
+		else
+		{
+			++numAliveB;
+		}
+	}
+	if (numAliveA == 0 || numAliveB == 0)
+	{
+		UGameplayStatics::OpenLevel(GetWorld(), "CharacterEditMap");
+	}
 }
 
 void ACombatGameMode::EndTurn()
 {
-	//TODO:End of Combat Check
-	//EndCombat();
 	++turnIndex;
 	if(turnIndex >= turnOrderDataList.Num())
 	{ 
 		turnIndex = 0;
 	}
 	currentCombatPhase = CombatPhase::StartingTurn;
-	ContinueCombat();//Mirar si esta recursividad la lia o no
+	
+	ContinueCombat();
 }
 
 void ACombatGameMode::EndCombat()
@@ -153,8 +184,6 @@ void ACombatGameMode::ToggleInitiativeUI()
 		combatInitiativeWidget->InitUI();
 		combatInitiativeWidget->AddToViewport();
 	}
-	
-	
 }
 
 void ACombatGameMode::UpdateInitiativeUI()

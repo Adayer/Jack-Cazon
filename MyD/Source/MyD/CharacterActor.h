@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "PlayerEditor/EnumRol.h"
 #include "GameFramework/Character.h"
+#include "DataStructures/ActionsQueue.h"
+#include "Components/TextRenderComponent.h"
 #include "CharacterActor.generated.h"
 
 class AHexCell;
@@ -42,26 +44,41 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 		int numActions;
-
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		int actionsExecuted;
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		int attackRange;
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		bool team;
 
-private:
+
+public:
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		AHexCell* myCell;
 
+/// <summary>
+/// Actions executed at the start of character's turn
+/// </summary>
+private: UPROPERTY(VisibleAnywhere, Category = "Attributes") UActionsQueue* startTurnActions;
+
+/// <summary>
+/// Actions executed every Tick function call
+/// </summary>
+private: UPROPERTY(VisibleAnywhere, Category = "Attributes") UActionsQueue* tickActions;
 
 public: 
 	//////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 		UTexture2D* iconTexture;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat")
+		UTextRenderComponent* infoTextRender;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 		TEnumAsByte<Rol> playerRol;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 		TSubclassOf<UAction> playerActions;
-
 
 protected:
 	// Called when the game starts or when spawned
@@ -80,18 +97,40 @@ public:
 
 public: UFUNCTION() void RecieveDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveMagicDamage(int32 damageAmount);
+public: UFUNCTION() void RecieveDirectDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveHealing(int32 healAmount);
 public: UFUNCTION() void Block();
+public: UFUNCTION()	void ModifyArmor(int armorVariation);
 private: UFUNCTION() void Die();
+
+public: UFUNCTION() void ShowInfoText(FText newInfoText);
+private: UFUNCTION() void UpdateInfoText(FText newInfoText);
+public: UFUNCTION() void HideInfoText();
+private: UFUNCTION() void ShowDamageRecievedText(int damageRecieved);
+
+public: UFUNCTION() void AddStartingTurnAction(UAtomicAction* startingTurnAction, int turnsLeftToExecuteAction);
+public: UFUNCTION() void AddStartingTurnActionRepeatable(UAtomicAction* startingTurnAction, int numTurnsExecutingAction);
+public: UFUNCTION() void AddTickAction(UAtomicAction* tickAction, float secondsToExecuteAction);
+
+public: UFUNCTION() int GetNumActions();
+public: UFUNCTION() int GetActionsExecuted();
+public: UFUNCTION() void IncreaseActionsExecuted();
 
 public: UFUNCTION() int32 GetAttackPower();
 public: UFUNCTION() int32 GetMagicAttackPower();
 public: UFUNCTION() int GetAttackRange();
+public: UFUNCTION() int GetMovementRange();
 
 public: AHexCell* GetMyCell();
 public: void SetCharacterCell(AHexCell* myNewCell);
 
-
+public:
+	UFUNCTION()
+		int GetCurrentHP() { return currentHp; }
+	UFUNCTION(BlueprintCallable, Category="Combat")
+		bool GetTeam() { return team; }
+	UFUNCTION()
+		void SetTeam(bool _team) { team = _team; }
 
 public: UFUNCTION(BlueprintCallable) int GetHP() { return hp; };
 public: UFUNCTION(BlueprintCallable) int GetArmor() { return armor; };
@@ -181,7 +220,5 @@ public: UFUNCTION(BlueprintCallable) void SetMagicDamage(int _magicDamage) {
 public: UFUNCTION(BlueprintCallable) void SetIconTexture(UTexture2D* _icon) { iconTexture = _icon; };
 public: UFUNCTION(BlueprintCallable) void SetRol(TEnumAsByte<Rol> _rol) { playerRol = _rol; };
 public: UFUNCTION(BlueprintCallable) void SetActions(TSubclassOf<UAction> _actions) { playerActions = _actions; };
-
-
 
 };

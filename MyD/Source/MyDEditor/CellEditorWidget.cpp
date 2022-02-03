@@ -99,7 +99,37 @@ void UCellEditorWidget::CreateSpawnPoint(bool team)
 	}
 }
 
+void UCellEditorWidget::RemoveCell()
+{
+	TArray<AActor*> selection = UEditorLevelLibrary::GetSelectedLevelActors();
 
+	for (AActor* selected : selection)
+	{
+		AHexCell* cell = Cast<AHexCell>(selected);
+
+		if (cell)
+		{
+			for (auto neighbour : cell->neighbours)
+			{
+				neighbour->neighbours.Remove(cell);
+			}
+			UEditorLevelLibrary::DestroyActor(selected);
+		}
+	}
+}
+
+void UCellEditorWidget::Reset()
+{
+	TArray<AActor*> allCells = UEditorLevelLibrary::GetAllLevelActors();
+	for (auto actor : allCells)
+	{
+		if (Cast<AHexCell>(actor) || Cast<ASpawnPoint>(actor))
+		{
+			UEditorLevelLibrary::DestroyActor(actor);
+		}
+	}
+
+}
 
 void UCellEditorWidget::ChangeCellType(ECellType type)
 {
@@ -124,7 +154,8 @@ void UCellEditorWidget::ChangeCellType(ECellType type)
 			switch (type)
 			{
 				CASE_TYPE_WEIGHT_MAT(ECellType::Base, 1, defaultMat);
-				CASE_TYPE_WEIGHT_MAT(ECellType::Water, 2, waterMat);
+				CASE_TYPE_WEIGHT_MAT(ECellType::Sand, 2, sandMat);
+				CASE_TYPE_WEIGHT_MAT(ECellType::Water, 3, waterMat);
 				CASE_TYPE_WEIGHT_MAT(ECellType::Obstacle, 99, obstacleMat);
 			}
 

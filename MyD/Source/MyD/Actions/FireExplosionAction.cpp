@@ -22,4 +22,6 @@ void UFireExplosionAction::ExecuteAction(ACharacterActor* actionLauncherCharacte
 			actionRecieverCharacter->RecieveMagicDamage(actionLauncherCharacter->GetMagicAttackPower());
 		}
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Fire attack action executed"));
 }

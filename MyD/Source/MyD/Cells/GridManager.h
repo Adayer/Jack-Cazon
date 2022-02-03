@@ -20,30 +20,34 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ACharacterActor> CharacterBPClass;
 
+	UPROPERTY(EditAnywhere)
+		UMaterial* aTeamMat;
+
+	UPROPERTY(EditAnywhere)
+		UMaterial* bTeamMat;
+
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* archerMesh;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* tankMesh;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* magueMesh;
+
+
 	////////////////////////////////////////////////////////////
 protected:
-	//UPROPERTY(EditAnywhere)
-	//	int gridWidth;
 
-	//UPROPERTY(EditAnywhere)
-	//	int gridHeight;
-
-
-	//UPROPERTY(EditAnywhere)
-	//	TSubclassOf<AHexCell> BaseCell;
 
 	UPROPERTY(EditAnywhere)
-	UTexture2D* OrcTextureObject;
+	UTexture2D* ArcherTextureObject;
 	
 	UPROPERTY(EditAnywhere)
-	UTexture2D* HumanTextureObject;
+	UTexture2D* TankTextureObject;
+	
+	UPROPERTY(EditAnywhere)
+	UTexture2D* MagueTextureObject;
+	
 
-	//float XOffset=86.5f;
-	//float YOffset=75.f;
-	//float OddOffset=43.25f;
-
-//public: //Quitar este public
-//	TArray<TArray<AHexCell*>> gridArray;
 
 private:
 	AHexCell* lastCell = NULL;
@@ -52,12 +56,10 @@ public:
 	// Sets default values for this actor's properties
 	AGridManager();
 
-	//UFUNCTION(BlueprintCallable)
-	//	void SpawnCells();
 	UFUNCTION(BlueprintCallable)
 		void SpawnCharacters();
 
-	void OnHoverCell(AHexCell* Cell);
+	void OnHoverCell(AHexCell* cell, TArray<AHexCell*> ignoreCells = TArray<AHexCell*>());
 	//////////////////////////////////////////////////////////////////////////////
 	void MovePawn();
 	/////////////////////////////////////////////////////////////////////////////
@@ -67,6 +69,8 @@ public:
 private:
 	TArray<AHexCell*> path;
 	bool AStar(AHexCell* start, AHexCell* end, float maxSteps);
+
+public: TArray<AHexCell*>* GetAStarPath(AHexCell* start, AHexCell* end, float maxSteps);
 
 protected:
 	// Called when the game starts or when spawned

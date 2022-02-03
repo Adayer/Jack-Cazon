@@ -13,6 +13,7 @@ enum class ECellType : uint8
 {
 	Base,
 	Water,
+	Sand,
 	Obstacle
 
 };
@@ -26,13 +27,14 @@ class MYD_API AHexCell : public AActor
 
 
 public:
+	UPROPERTY(VisibleAnywhere)
 	FIntPoint hexCoord;
 
 /////////////////////////////////////////////
 //		A STAR PROPERTIES
 ////////////////////////////////////////////
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite) 
+	UPROPERTY(VisibleAnywhere) 
 		int weight = 1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -40,7 +42,7 @@ public:
 
 	AHexCell* parent = NULL;
 	bool visited = false;
-	bool free = true;
+	//bool free = true;
 
 	UPROPERTY(EditAnywhere)
 	TArray<AHexCell*> neighbours;
@@ -57,6 +59,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 		UStaticMeshComponent* cellMesh;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+		ACharacterActor* characterInCell;
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -66,8 +71,7 @@ protected:
 		UMaterial* invalidMat;
 
 	///Too ADD
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-		ACharacterActor* characterInCell;
+
 	
 public:	
 	// Sets default values for this actor's properties

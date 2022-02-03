@@ -9,9 +9,11 @@ bool UAction::PerformAction(ACharacterActor* actionLauncherCharacter, AHexCell* 
 
 	if (actionLauncherCharacter != nullptr && actionRecieverCell != nullptr && CanExecuteAction(actionLauncherCharacter, actionRecieverCell)) {
 		ExecuteAction(actionLauncherCharacter, actionRecieverCell);
+		actionLauncherCharacter->IncreaseActionsExecuted();
 		return true;
 	}
 
+	UE_LOG(LogTemp, Warning, TEXT("The conditions for performing the action are not met"));
 	return false;
 }
 
