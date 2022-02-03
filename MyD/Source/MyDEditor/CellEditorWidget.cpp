@@ -27,10 +27,7 @@ void UCellEditorWidget::CreateCells(int gridWidth, int gridHeight)
 		}
 	}
 
-	//////////////////////////////////////////////////////////////////////////////
-	//APawn* pawn = GetWorld()->SpawnActor<APawn>(testPawn, gridArray[0][0]->GetActorLocation(), FRotator::ZeroRotator);
-	//controller = Cast<AMyController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	//////////////////////////////////////////////////////////////////////////////
+
 
 	// Set neighbours
 	for (int x = 0; x < gridWidth; x++)
