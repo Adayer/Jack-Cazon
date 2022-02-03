@@ -13,7 +13,7 @@ class MYD_API UActionLauncherComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public: UPROPERTY() UAction* myAction;
+private: UPROPERTY() UAction* myAction;
 
 public:	
 	// Sets default values for this component's properties
@@ -30,4 +30,5 @@ public:
 public: UFUNCTION() bool ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
 
 public: void SetMyAction(UAction* newAction);
+public: UAction* GetMyAction();
 };

@@ -5,17 +5,14 @@
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include "AtomicActions/MoveAtomicAction.h"
 #include "../Cells/GridManager.h"
+#include "AtomicActions/ResetCellColorAtomicAction.h"
+#include <MyD/Actions/AtomicActions/PaintCellAtomicAction.h>
 
 bool UMoveAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	UE_LOG(LogTemp, Warning, TEXT("Starting comprobations of Move Action"));
 
 	if (actionRecieverCell->GetCharacterInCell() != nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Destiny cell occuped"));
-		return false;
-	}
-
-	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetMovementRange()) {
-		UE_LOG(LogTemp, Warning, TEXT("Cell out of moving range"));
 		return false;
 	}
 
@@ -31,6 +28,11 @@ void UMoveAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCe
 		AGridManager* gridManager = Cast<AGridManager>(FoundActors[0]);
 		TArray<AHexCell*> path = *gridManager->GetAStarPath(actionLauncherCharacter->GetMyCell(), actionRecieverCell, actionLauncherCharacter->GetMovementRange());
 
+		UPaintCellAtomicAction* paintCellColorAtomicAction = NewObject<UPaintCellAtomicAction>();
+		paintCellColorAtomicAction->paintedCell = actionRecieverCell;
+		paintCellColorAtomicAction->valid = true;
+		actionLauncherCharacter->AddTickAction(paintCellColorAtomicAction, 0.f);
+
 		float elapsedTime = 0;
 		for (int i = 0; i < path.Num(); ++i) {
 			AHexCell* pathCell = path[path.Num() - i - 1];
@@ -43,7 +45,21 @@ void UMoveAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCe
 			actionLauncherCharacter->AddTickAction(moveAction, elapsedTime);
 		}
 
+		UResetCellColorAtomicAction* resetCellColorAtomicAction = NewObject<UResetCellColorAtomicAction>();
+		resetCellColorAtomicAction->paintedCell = actionRecieverCell;
+		actionLauncherCharacter->AddTickAction(resetCellColorAtomicAction, elapsedTime + 0.2f);
+
 		UE_LOG(LogTemp, Warning, TEXT("Move action executed"));
 	}
 	
+}
+
+bool UMoveAction::IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
+{
+	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetMovementRange()) {
+		UE_LOG(LogTemp, Warning, TEXT("Cell out of moving range"));
+		return false;
+	}
+
+	return true;
 }

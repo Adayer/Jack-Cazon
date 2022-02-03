@@ -29,11 +29,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-public: UFUNCTION(BlueprintCallable) void ExecuteAction();
-public: UFUNCTION(BlueprintCallable) void SetActionLaunchersAction(UAction* newAction);
+public: UFUNCTION(BlueprintCallable) bool ExecuteAction();
+public: UFUNCTION() TArray<AHexCell*> GetActionAffectedCells();
 
+public: UFUNCTION(BlueprintCallable) void SetActionLaunchersAction(UAction* newAction);
 public: UFUNCTION(BlueprintCallable) void SetActionLauncherCharacter(ACharacterActor* newActionLauncherCharacter);
 public: UFUNCTION(BlueprintCallable) ACharacterActor* GetActionLauncherCharacter();
 public: UFUNCTION(BlueprintCallable) void SetActionRecieverCell(AHexCell* newActionRecieverCell);
 public: UFUNCTION(BlueprintCallable) AHexCell* GetActionRecieverCell();
+public: UFUNCTION(BlueprintCallable) UActionLauncherComponent* GetActionLauncherComponent();
 };

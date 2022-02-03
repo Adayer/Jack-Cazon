@@ -21,3 +21,12 @@ void UHealingAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHe
 	actionRecieverCell->GetCharacterInCell()->RecieveHealing(5);
 	UE_LOG(LogTemp, Warning, TEXT("Healing action realized"));
 }
+
+bool UHealingAction::IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
+{
+	if (actionRecieverCell->GetCharacterInCell() != nullptr) {
+		return actionRecieverCell->GetCharacterInCell()->GetTeam() == actionLauncherCharacter->GetTeam();
+	}
+	
+	return false;
+}

@@ -16,11 +16,6 @@ bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, A
 		return false;
 	}
 
-	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetAttackRange()) {
-		UE_LOG(LogTemp, Warning, TEXT("attacked character out of attack range"));
-		return false;
-	}
-
 	return true;
 }
 
@@ -28,4 +23,16 @@ void UAttackAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHex
 
 	actionRecieverCell->GetCharacterInCell()->RecieveDamage(actionLauncherCharacter->GetAttackPower());
 	UE_LOG(LogTemp, Warning, TEXT("Attack action realized"));
+}
+
+bool UAttackAction::IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Objetive cell is out of range"));
+
+	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetAttackRange()) {
+		UE_LOG(LogTemp, Warning, TEXT("attacked character out of attack range"));
+		return false;
+	}
+
+	return true;
 }

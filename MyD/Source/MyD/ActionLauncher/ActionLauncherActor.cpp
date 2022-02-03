@@ -25,8 +25,16 @@ void AActionLauncherActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AActionLauncherActor::ExecuteAction() {
-	actionLauncherComponent->ExecuteAction(actionLauncherCharacter, actionRecieverCell);
+bool AActionLauncherActor::ExecuteAction() {
+	return actionLauncherComponent->ExecuteAction(actionLauncherCharacter, actionRecieverCell);
+}
+
+TArray<AHexCell*> AActionLauncherActor::GetActionAffectedCells() {
+	TArray<AHexCell*> affectedCells;
+	if (actionRecieverCell && actionLauncherComponent->GetMyAction()) {
+		affectedCells = actionLauncherComponent->GetMyAction()->GetAffectedCells(actionRecieverCell);
+	}
+	return affectedCells;
 }
 
 void AActionLauncherActor::SetActionLaunchersAction(UAction* newAction)
@@ -52,5 +60,10 @@ UFUNCTION(BlueprintCallable) void AActionLauncherActor::SetActionRecieverCell(AH
 UFUNCTION(BlueprintCallable)AHexCell* AActionLauncherActor::GetActionRecieverCell()
 {
 	return actionRecieverCell;
+}
+
+UActionLauncherComponent* AActionLauncherActor::GetActionLauncherComponent()
+{
+	return actionLauncherComponent;
 }
 
