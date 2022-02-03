@@ -7,6 +7,7 @@
 #include "TurnSystem/CombatGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include <MyD/Actions/AtomicActions/RemoveStunAtomicAction.h>
+#include "SavedPlayerData.h"
 
 // Sets default values
 ACharacterActor::ACharacterActor()
@@ -263,3 +264,18 @@ void ACharacterActor::SetCharacterCell(AHexCell* myNewCell) {
 	myCell = myNewCell;
 	SetActorLocation(myCell->GetActorLocation());
 }
+
+void ACharacterActor::SetStats(USavedPlayerData* _data)
+{
+	hp = _data->hp;
+	armor = _data->armor;
+	damage = _data->damage;
+	magicArmor = _data->magicArmor;
+	magicDamage = _data->magicDamage;
+	playerRol = _data->playerRol;
+
+	skill1 = Cast<UAction>(_data->skill1->GetDefaultObject());
+	skill2 = Cast<UAction>(_data->skill2->GetDefaultObject());
+	block = Cast<UAction>(_data->block->GetDefaultObject());
+};
+

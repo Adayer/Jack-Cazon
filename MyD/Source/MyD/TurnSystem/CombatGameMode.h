@@ -40,6 +40,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Combat")
 		UCombatInitiativeWidget* combatInitiativeWidget;
 
+	UFUNCTION(BlueprintNativeEvent, Category = "Combat")
+		void InitializeActionsWidget();
+
 	//Logic
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly ,Category="Combat")
 		TArray<UTurnOrderData*> turnOrderDataList;
