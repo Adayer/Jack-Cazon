@@ -5,5 +5,5 @@
 
 UMainGameInstance::UMainGameInstance() {
 
-	playersData.Reserve(6);
+	playersData.Reserve(4);
 }

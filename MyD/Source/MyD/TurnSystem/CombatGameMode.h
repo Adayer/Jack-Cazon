@@ -70,7 +70,8 @@ public:
 		void CharacterHasDied();
 
 	TArray<UTurnOrderData*>* GetTurnOrderDataList() { return &turnOrderDataList; }
-	int GetTurnIndex() { return turnIndex; }
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+		int GetTurnIndex() { return turnIndex; }
 	//UI
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 		void ToggleInitiativeUI();

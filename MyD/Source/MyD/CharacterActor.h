@@ -110,7 +110,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Combat")
 		void StartTurn();
 
-public: UFUNCTION() void RecieveDamage(int32 damageAmount);
+public: UFUNCTION(BlueprintCallable, Category="Combat") void RecieveDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveMagicDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveDirectDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveHealing(int32 healAmount);
