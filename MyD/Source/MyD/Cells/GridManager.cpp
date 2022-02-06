@@ -15,6 +15,7 @@
 // Sets default values
 AGridManager::AGridManager()
 {
+	//Carga de textura de los iconos
 	const FString ARCHER_TEXTURE = "Texture2D'/Game/Images/RolesImages/IconRolArcher.IconRolArcher'";
 	ConstructorHelpers::FObjectFinder<UTexture2D> ArcherTexture(*ARCHER_TEXTURE);
 	ArcherTextureObject = ArcherTexture.Object;
@@ -54,7 +55,8 @@ void AGridManager::SpawnCharacters()
 			newChar->SetCharacterCell(spawnPoint->cellOwner);
 			PutCharacterInCell(newChar, spawnPoint->cellOwner);
 
-			newChar->SetTeam(spawnPoint->team);
+			newChar->SetStats(playersData[i]);
+
 			if (spawnPoint->team)
 			{
 				UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
@@ -66,7 +68,7 @@ void AGridManager::SpawnCharacters()
 				MeshComponent->SetMaterial(0, aTeamMat);
 			}
 
-			newChar->SetStats(playersData[i]);
+			newChar->SetTeam(spawnPoint->team);
 
 			switch (newChar->GetRol())
 			{
