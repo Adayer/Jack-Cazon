@@ -14,7 +14,7 @@ UActionLauncherComponent::UActionLauncherComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
-	myAction = CreateDefaultSubobject<UAttackAction>("myAction");
+	myAction = NULL;
 	
 }
 
@@ -44,11 +44,18 @@ bool UActionLauncherComponent::ExecuteAction(ACharacterActor* actionLauncherChar
 	if (myAction != NULL) {
 		if (myAction->PerformAction(actionLauncherCharacter, actionRecieverCell)) {
 			if (actionLauncherCharacter != nullptr && actionLauncherCharacter->GetActionsExecuted() >= actionLauncherCharacter->GetNumActions()) {
-				ACombatGameMode* combatGameMode = Cast<ACombatGameMode>(GetWorld()->GetAuthGameMode());
-				if (combatGameMode != nullptr) {
-					combatGameMode->ContinueCombat();
+				UWorld* myWorld = GetWorld();
+				if (myWorld != nullptr) {
+					ACombatGameMode* combatGameMode = Cast<ACombatGameMode>(myWorld->GetAuthGameMode());
+					if (combatGameMode != nullptr) {
+						combatGameMode->ContinueCombat();
+					}
 				}
+				
 			}
+
+			myAction = NULL;
+			return true;
 		}
 		
 	}
@@ -56,10 +63,15 @@ bool UActionLauncherComponent::ExecuteAction(ACharacterActor* actionLauncherChar
 		UE_LOG(LogTemp, Warning, TEXT("myAction is NULL"));
 	}
 	
-	return true;
+	return false;
 }
 
 void UActionLauncherComponent::SetMyAction(UAction* newAction)
 {
 	myAction = newAction;
+}
+
+UAction* UActionLauncherComponent::GetMyAction()
+{
+	return myAction;
 }

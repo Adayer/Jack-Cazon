@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Action.h"
-#include "BlockAction.generated.h"
+#include "StunAction.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MYD_API UBlockAction : public UAction
+class MYD_API UStunAction : public UAction
 {
 	GENERATED_BODY()
 	

@@ -14,3 +14,8 @@ void UBlockAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexC
 	actionLauncherCharacter->Block();
 	UE_LOG(LogTemp, Warning, TEXT("Block action"));
 }
+
+bool UBlockAction::IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
+{
+	return actionLauncherCharacter->GetMyCell() == actionRecieverCell;
+}

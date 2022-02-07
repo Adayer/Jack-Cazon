@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AttackAction.h"
+#include "CriticalAttackAction.h"
+
 #include "../CharacterActor.h"
 #include "../Cells/HexCell.h"
 
-
-bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
+bool UCriticalAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
 	if (actionRecieverCell->GetCharacterInCell() == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("No character in cell selected"));
 		return false;
@@ -19,13 +19,22 @@ bool UAttackAction::CanExecuteAction(ACharacterActor* actionLauncherCharacter, A
 	return true;
 }
 
-void UAttackAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
+void UCriticalAttackAction::ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) {
+	int32 isCritticAttck = FMath::RandRange(0, 2);
 
-	actionRecieverCell->GetCharacterInCell()->RecieveDamage(actionLauncherCharacter->GetAttackPower());
-	UE_LOG(LogTemp, Warning, TEXT("Attack action realized"));
+	if (isCritticAttck == 0) {
+		actionRecieverCell->GetCharacterInCell()->RecieveDamage(actionLauncherCharacter->GetAttackPower() * 2);
+		UE_LOG(LogTemp, Warning, TEXT("Critic attack action realized"));
+	}
+	else {
+		actionRecieverCell->GetCharacterInCell()->RecieveDamage(actionLauncherCharacter->GetAttackPower());
+		UE_LOG(LogTemp, Warning, TEXT("Attack action realized"));
+	}
+	
+	
 }
 
-bool UAttackAction::IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
+bool UCriticalAttackAction::IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell)
 {
 	if (actionLauncherCharacter->GetMyCell()->DistanceToCell(actionRecieverCell) > actionLauncherCharacter->GetAttackRange()) {
 		UE_LOG(LogTemp, Warning, TEXT("attacked character out of attack range"));

@@ -20,4 +20,7 @@ class MYD_API UAction : public UObject
 public: UFUNCTION() bool PerformAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
 public: UFUNCTION() virtual bool CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
 public: UFUNCTION() virtual void ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
+
+public: UFUNCTION() virtual TArray<AHexCell*> GetAffectedCells(AHexCell* actionRecieverCell);
+public: UFUNCTION() virtual bool IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
 };

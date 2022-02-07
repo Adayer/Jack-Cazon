@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "Cells/HexCell.h"
+#include "ActionLauncher/ActionLauncherActor.h"
 #include "MyController.generated.h"
 
 /**
@@ -25,7 +26,10 @@ private:
 		float cooldown = 0;
 		AHexCell* currentCell;
 
-private: AHexCell* selectedCell = nullptr;
+private: AActionLauncherActor* actionLauncher;
+private: TArray<AHexCell*> affectedCells;
+private: AHexCell* selectedCell;
+private: bool preparingAction = false;
 
 public:
 	AMyController();
@@ -33,7 +37,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 		void MoveCharacter(TArray<AHexCell*>& _path);
 
-public: void ResetSelectedCell();
+public: void ResetSelectedCells();
 
 protected:
 	// Called when the game starts or when spawned
@@ -45,5 +49,8 @@ public:
 
 public: UFUNCTION() void OnLeftMouseButtonPressed();
 
+public: UFUNCTION(BlueprintCallable, Category = "Combat") TArray<AHexCell*> GetAffectedCells();
 public: UFUNCTION(BlueprintCallable, Category = "Combat") AHexCell* GetSelectedCell();
+
+public: UFUNCTION(BlueprintCallable, Category = "Combat") void PrepareAction(UAction* actionToExecute, ACharacterActor* actionLauncherCharacter);
 };

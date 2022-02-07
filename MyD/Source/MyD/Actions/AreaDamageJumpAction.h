@@ -3,20 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Action.h"
-#include "FireExplosionAction.generated.h"
+#include "FireExplosionAction.h"
+#include "AreaDamageJumpAction.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MYD_API UFireExplosionAction : public UAction
+class MYD_API UAreaDamageJumpAction : public UFireExplosionAction
 {
 	GENERATED_BODY()
 	
-public: virtual bool CanExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
 public: virtual void ExecuteAction(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell);
-
-public: TArray<AHexCell*> GetAffectedCells(AHexCell* actionRecieverCell) override;
 public: virtual bool IsActionInRangeOfExecution(ACharacterActor* actionLauncherCharacter, AHexCell* actionRecieverCell) override;
 };

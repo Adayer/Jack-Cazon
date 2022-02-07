@@ -41,3 +41,9 @@ void UActionsQueue::UpdateTimeUnits(float timeUnitsElapsed)
 		*timeUnit = FMath::Max<float>(0, *timeUnit - timeUnitsElapsed);
 	}
 }
+
+void UActionsQueue::Empty()
+{
+	atomicActionsQueue.Empty();
+	timeUnits.Empty();
+}
