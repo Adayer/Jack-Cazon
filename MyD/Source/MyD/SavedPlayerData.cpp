@@ -21,3 +21,9 @@ USavedPlayerData::USavedPlayerData() {
 	magicDamage = 10;
 
 }
+
+USavedPlayerData* USavedPlayerData::GetItem() {
+
+
+	return this;
+}

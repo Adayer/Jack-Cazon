@@ -7,7 +7,6 @@
 #include "Actions/Action.h"
 #include "SavedPlayerData.generated.h"
 
-
 /**
  * 
  */
@@ -40,7 +39,13 @@ public:
 		TEnumAsByte<Rol> playerRol;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-		TSubclassOf<UAction> playerActions;
+		TSubclassOf<UAction> skill1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+		TSubclassOf<UAction> skill2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+		TSubclassOf<UAction> block;
 
 
 
@@ -51,7 +56,9 @@ public: UFUNCTION(BlueprintCallable) int GetDamage() { return damage; };
 public: UFUNCTION(BlueprintCallable) int GetMagicDamage() { return magicDamage; };
 public: UFUNCTION(BlueprintCallable) UTexture2D* GetIcon() { return iconTexture; };
 public: UFUNCTION(BlueprintCallable) TEnumAsByte<Rol> GetRol() { return playerRol; };
-public: UFUNCTION(BlueprintCallable) TSubclassOf<UAction> GetActions() { return playerActions; };
+public: UFUNCTION(BlueprintCallable) TSubclassOf<UAction> GetSkill1() { return skill1; };
+
+public: UFUNCTION(BlueprintCallable) void SetSkill1(TSubclassOf<UAction> newSkill1) { skill1 = newSkill1; };
 
 public: UFUNCTION(BlueprintCallable) void SetHP(int _hp)
 {
@@ -86,9 +93,9 @@ public: UFUNCTION(BlueprintCallable) void SetArmor(int _armor) {
 };
 public: UFUNCTION(BlueprintCallable) void SetMagicArmor(int _magicArmor) {
 
-	if (_magicArmor > 19)
+	if (_magicArmor > 20)
 	{
-		magicArmor = 19;
+		magicArmor = 20;
 	}
 	else if (_magicArmor < 1)
 	{
@@ -131,11 +138,12 @@ public: UFUNCTION(BlueprintCallable) void SetMagicDamage(int _magicDamage) {
 };
 public: UFUNCTION(BlueprintCallable) void SetIconTexture(UTexture2D* _icon) { iconTexture = _icon; };
 public: UFUNCTION(BlueprintCallable) void SetRol(TEnumAsByte<Rol> _rol) { playerRol = _rol; };
-public: UFUNCTION(BlueprintCallable) void SetActions(TSubclassOf<UAction> _actions) { playerActions = _actions; };
 
 	  UFUNCTION(BlueprintCallable)
-		USavedPlayerData* USavedPlayerDataInit();
+		  USavedPlayerData* USavedPlayerDataInit();
 
+	  UFUNCTION(BlueprintCallable)
+		  USavedPlayerData* GetItem();
 
-USavedPlayerData();
+	USavedPlayerData();
 };

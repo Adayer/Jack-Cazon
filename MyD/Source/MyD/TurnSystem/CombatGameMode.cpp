@@ -10,9 +10,14 @@ void ACombatGameMode::BeginPlay()
 	TArray<AActor*> GridManagers;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGridManager::StaticClass(), GridManagers);
 
-	Cast<AGridManager>(GridManagers[0])->SpawnCharacters();
+	if (GridManagers.Num() > 0) {
+		AGridManager* gridManager = Cast<AGridManager>(GridManagers[0]);
+		if (gridManager) {
+			gridManager->SpawnCharacters();
 
-	StartCombat();
+			StartCombat();
+		}
+	}
 }
 
 void ACombatGameMode::StartCombat()
@@ -71,7 +76,7 @@ void ACombatGameMode::ContinueCombat()
 		case CombatPhase::StartingCombat:
 		{
 			currentCombatPhase = CombatPhase::StartingTurn;
-			StartTurn(); //Mirar si estar recursividad la lia
+			StartTurn();
 			break;
 		}
 		case CombatPhase::StartingTurn:
@@ -109,12 +114,13 @@ void ACombatGameMode::StartTurn()
 		currentCombatPhase = CombatPhase::WaitingForEndTurn;
 		currentTurnOrderData->GetCharacter()->StartTurn();
 	}
-	else {
+	else 
+	{
 		turnOrderDataList.RemoveAt(turnIndex);
-
 		if (turnIndex >= turnOrderDataList.Num()) {
 			turnIndex = 0;
 		}
+		StartTurn();
 	}
 }
 void ACombatGameMode::CharacterHasDied()
@@ -147,7 +153,7 @@ void ACombatGameMode::CharacterHasDied()
 	}
 	if (numAliveA == 0 || numAliveB == 0)
 	{
-		UGameplayStatics::OpenLevel(GetWorld(), "CharacterEditMap");
+		EndCombat();
 	}
 }
 
@@ -165,7 +171,7 @@ void ACombatGameMode::EndTurn()
 
 void ACombatGameMode::EndCombat()
 {
-	//TODO:End combat
+	UGameplayStatics::OpenLevel(GetWorld(), "CharacterEditMap");
 }
 
 void ACombatGameMode::ToggleInitiativeUI()
@@ -184,6 +190,8 @@ void ACombatGameMode::ToggleInitiativeUI()
 		combatInitiativeWidget->InitUI();
 		combatInitiativeWidget->AddToViewport();
 	}
+
+	InitializeActionsWidget();
 }
 
 void ACombatGameMode::UpdateInitiativeUI()
@@ -197,4 +205,8 @@ void ACombatGameMode::UpdateInitiativeUI()
 ACharacterActor* ACombatGameMode::GetCharacterWithTurn()
 {
 	return turnOrderDataList[turnIndex]->GetCharacter();
+}
+
+void ACombatGameMode::InitializeActionsWidget_Implementation() {
+
 }

@@ -20,16 +20,16 @@ class MYD_API AMyController : public APlayerController
 	GENERATED_BODY()
 
 private:
-		AGridManager* Grid;
-		bool Walking = false;
-		TArray<AHexCell*> path;
-		float cooldown = 0;
-		AHexCell* currentCell;
+		UPROPERTY(Transient) AGridManager* Grid;
+		UPROPERTY() bool Walking = false;
+		UPROPERTY(Transient) TArray<AHexCell*> path;
+		UPROPERTY() float cooldown = 0;
+		UPROPERTY(Transient) AHexCell* currentCell;
 
-private: AActionLauncherActor* actionLauncher;
-private: TArray<AHexCell*> affectedCells;
-private: AHexCell* selectedCell;
-private: bool preparingAction = false;
+private: UPROPERTY(Transient) AActionLauncherActor* actionLauncher;
+private: UPROPERTY(Transient) TArray<AHexCell*> affectedCells;
+private: UPROPERTY(Transient) AHexCell* selectedCell;
+private: UPROPERTY() bool preparingAction = false;
 
 public:
 	AMyController();

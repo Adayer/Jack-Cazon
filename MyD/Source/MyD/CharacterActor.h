@@ -11,6 +11,7 @@
 
 class AHexCell;
 class UAction;
+class USavedPlayerData;
 
 UCLASS()
 class MYD_API ACharacterActor : public ACharacter
@@ -53,10 +54,22 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		bool stunned = false;
 
-
 public:
 	UPROPERTY(VisibleAnywhere, Category = "Attributes")
 		AHexCell* myCell;
+
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		UAction* skill1;
+
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		UAction* skill2;
+
+	UPROPERTY(VisibleAnywhere, Category = "Attributes")
+		UAction* block;
+
+public: UFUNCTION(BlueprintCallable) UAction* GetSkill1() {return skill1; }
+public: UFUNCTION(BlueprintCallable) UAction* GetSkill2() { return skill2; }
+public: UFUNCTION(BlueprintCallable) UAction* GetSkillBlock() { return block; }
 
 /// <summary>
 /// Actions executed at the start of character's turn
@@ -97,7 +110,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Combat")
 		void StartTurn();
 
-public: UFUNCTION() void RecieveDamage(int32 damageAmount);
+public: UFUNCTION(BlueprintCallable, Category="Combat") void RecieveDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveMagicDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveDirectDamage(int32 damageAmount);
 public: UFUNCTION() void RecieveHealing(int32 healAmount);
@@ -227,5 +240,5 @@ public: UFUNCTION(BlueprintCallable) void SetMagicDamage(int _magicDamage) {
 public: UFUNCTION(BlueprintCallable) void SetIconTexture(UTexture2D* _icon) { iconTexture = _icon; };
 public: UFUNCTION(BlueprintCallable) void SetRol(TEnumAsByte<Rol> _rol) { playerRol = _rol; };
 public: UFUNCTION(BlueprintCallable) void SetActions(TSubclassOf<UAction> _actions) { playerActions = _actions; };
-
+public:UFUNCTION(BlueprintCallable) void SetStats(USavedPlayerData* _data);
 };

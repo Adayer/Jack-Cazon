@@ -8,11 +8,14 @@
 
 #include "../CharacterActor.h"
 #include "../SpawnPoint.h"
+#include "../SavedPlayerData.h"
+#include "../MainGameInstance.h"
 
 
 // Sets default values
 AGridManager::AGridManager()
 {
+	//Carga de textura de los iconos
 	const FString ARCHER_TEXTURE = "Texture2D'/Game/Images/RolesImages/IconRolArcher.IconRolArcher'";
 	ConstructorHelpers::FObjectFinder<UTexture2D> ArcherTexture(*ARCHER_TEXTURE);
 	ArcherTextureObject = ArcherTexture.Object;
@@ -40,62 +43,63 @@ void AGridManager::SpawnCharacters()
 	TArray<AActor*> AllSpawnPoints;
 	UGameplayStatics::GetAllActorsOfClass(this, ASpawnPoint::StaticClass(), AllSpawnPoints);
 	
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	ensure(GameInstance);
+	TArray<USavedPlayerData*> playersData = GameInstance->playersData;
 
-	for (auto sp : AllSpawnPoints)
-	{
-		ASpawnPoint* spawnPoint = Cast<ASpawnPoint>(sp);
-
-		ACharacterActor* newChar = GetWorld()->SpawnActor<ACharacterActor>(CharacterBPClass);
-
-		newChar->SetCharacterCell(spawnPoint->cellOwner);
-		if (spawnPoint->cellOwner != NULL)
+	if (playersData.Num() > 0) {
+		for (int i = 0; i < AllSpawnPoints.Num(); ++i)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Neighbour num: %d"), spawnPoint->cellOwner->neighbours.Num());
-		}		
+			ASpawnPoint* spawnPoint = Cast<ASpawnPoint>(AllSpawnPoints[i]);
+			ACharacterActor* newChar = GetWorld()->SpawnActor<ACharacterActor>(CharacterBPClass);
+			newChar->SetCharacterCell(spawnPoint->cellOwner);
+			PutCharacterInCell(newChar, spawnPoint->cellOwner);
 
-		PutCharacterInCell(newChar, spawnPoint->cellOwner);
+			newChar->SetStats(playersData[i]);
 
-		bool team = spawnPoint->team;
-		newChar->SetTeam(spawnPoint->team);
-		if (newChar->GetTeam())
-		{
-			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
-			MeshComponent->SetMaterial(0, aTeamMat);
-		}
-		else
-		{
-			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
-			MeshComponent->SetMaterial(0, bTeamMat);
-		}
-
-		switch (newChar->GetRol())
-		{
-		case Rol::Archer:
+			if (spawnPoint->team)
 			{
-			
-			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
-			MeshComponent->SetStaticMesh(archerMesh);
-			newChar->SetIconTexture(ArcherTextureObject);
+				UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+				MeshComponent->SetMaterial(0, bTeamMat);
+			}
+			else
+			{
+				UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+				MeshComponent->SetMaterial(0, aTeamMat);
+			}
+
+			newChar->SetTeam(spawnPoint->team);
+
+			switch (newChar->GetRol())
+			{
+			case Rol::Archer:
+			{
+
+				UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+				MeshComponent->SetStaticMesh(archerMesh);
+				newChar->SetIconTexture(ArcherTextureObject);
 
 				break;
 			}
-		case Rol::Melee:
+			case Rol::Melee:
 			{
-			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
-			MeshComponent->SetStaticMesh(tankMesh);
-			newChar->SetIconTexture(TankTextureObject);
+				UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+				MeshComponent->SetStaticMesh(tankMesh);
+				newChar->SetIconTexture(TankTextureObject);
 				break;
 			}
-		case Rol::Mague:
+			case Rol::Mague:
 			{
-			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
-			MeshComponent->SetStaticMesh(magueMesh);
-			newChar->SetIconTexture(MagueTextureObject);
+				UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(newChar->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+				MeshComponent->SetStaticMesh(magueMesh);
+				newChar->SetIconTexture(MagueTextureObject);
 				break;
+			}
 			}
 		}
-
 	}
+ 
+	
 
 }
 
@@ -119,17 +123,6 @@ void AGridManager::OnHoverCell(AHexCell* cell, TArray<AHexCell*> ignoreCells)
 	}
 }
 
-
-/// /////////////////////////////////////////////////////////////////////////
-
-void AGridManager::MovePawn()
-{
-	if (controller)
-	{
-		controller->MoveCharacter(path);
-	}
-	
-}
 bool AGridManager::PutCharacterInCell(ACharacterActor* placedCharacter, AHexCell* targetCell)
 {
 	if (targetCell == nullptr || targetCell->GetCharacterInCell() != nullptr || placedCharacter == nullptr) {
@@ -230,9 +223,9 @@ bool AGridManager::AStar(AHexCell* start, AHexCell* end, float maxSteps)
 	return false;
 }
 
-TArray<AHexCell*>* AGridManager::GetAStarPath(AHexCell* start, AHexCell* end, float maxSteps)
+TArray<AHexCell*>* AGridManager::GetAStarPath(AHexCell* start, AHexCell* end, float maxSteps, bool& hasPath)
 {
-	AStar(start, end, maxSteps);
+	hasPath = AStar(start, end, maxSteps);
 	return &path;
 }
 
