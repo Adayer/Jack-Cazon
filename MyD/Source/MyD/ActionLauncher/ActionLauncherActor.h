@@ -13,7 +13,7 @@ class MYD_API AActionLauncherActor : public AActor
 {
 	GENERATED_BODY()
 
-private: UPROPERTY() UActionLauncherComponent* actionLauncherComponent;
+private: UPROPERTY(Transient) UActionLauncherComponent* actionLauncherComponent;
 private: UPROPERTY(VisibleAnywhere) ACharacterActor* actionLauncherCharacter;
 private: UPROPERTY(VisibleAnywhere) AHexCell* actionRecieverCell;
 	

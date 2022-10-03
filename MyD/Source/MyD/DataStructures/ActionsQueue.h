@@ -16,7 +16,7 @@ class MYD_API UActionsQueue : public UObject
 {
 	GENERATED_BODY()
 
-private: TArray<UAtomicAction*> atomicActionsQueue;
+private: UPROPERTY(Transient) TArray<UAtomicAction*> atomicActionsQueue;
 private: TArray<float*> timeUnits;
 
 public: UActionsQueue();
